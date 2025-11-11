@@ -1,9 +1,9 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, type Transition } from "framer-motion";
 import { Cpu, Code, Github, ExternalLink, Zap } from "lucide-react";
 import type { ProjectDetailProps } from "../../utils/types";
 
-const pageTransition = {
+const pageTransition: Transition = {
   type: "spring",
   stiffness: 300,
   damping: 30,

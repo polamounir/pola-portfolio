@@ -1,9 +1,13 @@
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { Mail, Github, Linkedin, CheckCircle } from "lucide-react";
 import type { ContactSectionProps } from "../../utils/types";
 
-const pageTransition = { type: "spring", stiffness: 300, damping: 30 };
+const pageTransition: Transition = {
+  type: "spring",
+  stiffness: 300,
+  damping: 30,
+};
 const listVariants = {
   visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
   hidden: {},

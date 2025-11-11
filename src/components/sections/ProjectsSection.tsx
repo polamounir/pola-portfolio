@@ -1,9 +1,13 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, type Transition } from "framer-motion";
 import { Folder, Code, Github, ExternalLink } from "lucide-react";
 import type { ProjectsSectionProps } from "../../utils/types";
 
-const pageTransition = { type: "spring", stiffness: 300, damping: 30 };
+const pageTransition: Transition = {
+  type: "spring",
+  stiffness: 300,
+  damping: 30,
+};
 const listVariants = {
   visible: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
   hidden: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },

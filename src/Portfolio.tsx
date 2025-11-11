@@ -1,8 +1,8 @@
 // Portfolio.tsx
 
-import React, { useState, useEffect, useMemo, Suspense } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Terminal, Code, Cpu, Database } from "lucide-react";
+import React, { useState, useEffect, Suspense } from "react";
+import { AnimatePresence, motion, type Transition } from "framer-motion";
+import { Code, Cpu, Database } from "lucide-react";
 
 // --- LAZY LOADING IMPORTS (MAX SEO/PERFORMANCE) ---
 // Note: We use React.lazy for the large content sections
@@ -34,8 +34,6 @@ import type {
   FormData,
 } from "./utils/types";
 
-import { Helmet, HelmetProvider } from "react-helmet-async";
-
 // --- Framer Motion Variants for Page Transitions ---
 const pageVariants = {
   initial: { opacity: 0, y: 10, filter: "blur(5px)" },
@@ -43,14 +41,11 @@ const pageVariants = {
   out: { opacity: 0, y: -10, filter: "blur(5px)" },
 };
 
-const pageTransition = {
+const pageTransition: Transition = {
   type: "spring",
   stiffness: 300,
   damping: 30,
 };
-
-// --- DATA CONSTANTS (Type enforced) ---
-const BASE_URL = "https://yourdomain.com";
 
 const PERSONAL_INFO: PersonalInfo = {
   name: "Pola Mounir",
@@ -265,95 +260,9 @@ const Portfolio: React.FC = () => {
     }, 3000);
   };
 
-  // --- MAX SEO IMPROVEMENT: Dynamic Metadata Logic ---
-  const seo = useMemo(() => {
-    if (currentProject) {
-      const projectPath = `/projects/${currentProject.title
-        .toLowerCase()
-        .replace(/\s+/g, "-")}`;
-      return {
-        title: `${currentProject.title} | Pola Mounir Project`,
-        description: currentProject.description,
-        url: BASE_URL + projectPath,
-        keywords: currentProject.tech.join(", "),
-      };
-    }
-
-    const baseTitle = `${PERSONAL_INFO.name} - ${PERSONAL_INFO.role}`;
-
-    switch (currentSection) {
-      case "home":
-        return {
-          title: baseTitle,
-          description: ABOUT_ME_SUMMARY,
-          url: BASE_URL + "/",
-          keywords:
-            "React Frontend Developer, Pola Mounir, JavaScript, Tailwind, Cairo Egypt",
-        };
-      case "projects":
-        return {
-          title: `Projects | ${PERSONAL_INFO.name}`,
-          description: `View ${PROJECT_DATA.length} featured web projects including E-commerce and ML applications, built with React, Redux, and Node.js.`,
-          url: BASE_URL + "/projects",
-          keywords:
-            "React projects, e-commerce, Medical Prediction, Redux Toolkit, Pola Mounir portfolio",
-        };
-      case "skills":
-        return {
-          title: `Skills & Stack | ${PERSONAL_INFO.name}`,
-          description: `Core tech stack: React.js (95%), TypeScript, Redux Toolkit, Node.js, Express.js, and MongoDB.`,
-          url: BASE_URL + "/skills",
-          keywords:
-            "React.js skills, TypeScript expertise, Node.js stack, Frontend developer skills",
-        };
-      case "experience":
-        return {
-          title: `Experience | ${PERSONAL_INFO.name}`,
-          description: `1+ years of experience as a freelance Frontend Developer focused on building clean, high-performance web applications with modern tech.`,
-          url: BASE_URL + "/experience",
-          keywords:
-            "Frontend Developer experience, Freelance developer, Pola Mounir work history",
-        };
-      case "contact":
-        return {
-          title: `Contact | ${PERSONAL_INFO.name}`,
-          description: `Contact Pola Mounir via email (${PERSONAL_INFO.email}) or connect on LinkedIn/GitHub for new opportunities.`,
-          url: BASE_URL + "/contact",
-          keywords:
-            "Pola Mounir contact, hire React developer, email Pola Mounir",
-        };
-      default:
-        return {
-          title: baseTitle,
-          description: ABOUT_ME_SUMMARY,
-          url: BASE_URL + "/",
-          keywords: "",
-        };
-    }
-  }, [currentSection, currentProject]);
-
   return (
-    // HelmetProvider should wrap the entire component tree for SSR/SEO functionality
-    <HelmetProvider>
+    <>
       <div className="min-h-screen bg-gray-950 text-gray-100 font-mono relative overflow-hidden">
-        <Helmet>
-          <title>{seo.title}</title>
-          <meta name="description" content={seo.description} />
-          {/* Canonical Link: Crucial for SPAs */}
-          <link rel="canonical" href={seo.url} />
-
-          {/* Open Graph Tags for Social Sharing */}
-          <meta property="og:title" content={seo.title} />
-          <meta property="og:description" content={seo.description} />
-          <meta property="og:url" content={seo.url} />
-          {/* Set OG type to 'article' if viewing a project detail, otherwise 'website' */}
-          <meta
-            property="og:type"
-            content={currentProject ? "article" : "website"}
-          />
-          {/* Add keywords meta tag for extra relevance */}
-          {seo.keywords && <meta name="keywords" content={seo.keywords} />}
-        </Helmet>
         {/* Animated Background Grid */}
         <div className="fixed inset-0 opacity-10">
           <div
@@ -477,7 +386,7 @@ const Portfolio: React.FC = () => {
           }
         `}</style>
       </div>
-    </HelmetProvider>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import type { NavItemProps } from "../../utils/types";
 
 const NavItem: React.FC<NavItemProps> = ({
