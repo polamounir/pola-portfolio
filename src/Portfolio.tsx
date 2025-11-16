@@ -52,8 +52,8 @@ const PERSONAL_INFO: PersonalInfo = {
   role: "React Frontend Developer",
   location: "Giza, Egypt",
   email: "polamounir103@gmail.com",
-  github: "LINK_TO_POLA_GITHUB",
-  linkedin: "LINK_TO_POLA_LINKEDIN",
+  github: "https://github.com/polamounir",
+  linkedin: "https://www.linkedin.com/in/pola-mounir-samir/",
 };
 
 const ABOUT_ME_SUMMARY: string =
