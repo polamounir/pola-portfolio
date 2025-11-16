@@ -139,7 +139,8 @@ const PROJECT_DATA: Project[] = [
     lines: "1,000+",
     image: "🚚",
     status: "Active Dev",
-    imgSrc: "https://picsum.photos/seed/ecommerce/600/400",
+    imgSrc:
+      "https://mindster.com/mindster-blogs/wp-content/uploads/2020/07/hyper-local-delivery.jpg",
   },
   {
     id: 1,
@@ -160,7 +161,8 @@ const PROJECT_DATA: Project[] = [
     lines: "15,000+",
     image: "🛒",
     status: "Production",
-    imgSrc: "https://picsum.photos/seed/ecommerce/600/400",
+    imgSrc:
+      "https://devtorium.com/wp-content/webp-express/webp-images/uploads/2021/08/blog_internal-image_-_10_Best_eCommerce_Platforms-5.png.webp",
   },
   {
     id: 2,
@@ -173,7 +175,8 @@ const PROJECT_DATA: Project[] = [
     lines: "8,000+",
     image: "🧠",
     status: "Beta",
-    imgSrc: "https://dummyimage.com/600x400/0f0/000&text=Medical+System",
+    imgSrc:
+      "https://www.news-medical.net/images/news/ImageForNews_712799_16517554860339063.jpg",
   },
   {
     id: 3,
@@ -186,7 +189,8 @@ const PROJECT_DATA: Project[] = [
     lines: "12,000+",
     image: "🎓",
     status: "Production",
-    imgSrc: "https://picsum.photos/seed/courses/600/400",
+    imgSrc:
+      "https://foundr.com/wp-content/uploads/2021/09/Best-online-course-platforms.png",
   },
   {
     id: 4,
@@ -205,7 +209,8 @@ const PROJECT_DATA: Project[] = [
     lines: "5,000+",
     image: "🌦️",
     status: "Production",
-    imgSrc: "https://picsum.photos/seed/weather/600/400",
+    imgSrc:
+      "https://store-images.s-microsoft.com/image/apps.6094.14354997847412956.ef63f72a-4ac8-4432-8778-7105ccbec117.4f77c938-04ea-47ff-8ca2-273e51145371?h=1280",
   },
 ];
 
