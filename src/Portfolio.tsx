@@ -50,7 +50,7 @@ const pageTransition: Transition = {
 const PERSONAL_INFO: PersonalInfo = {
   name: "Pola Mounir",
   role: "React Frontend Developer",
-  location: "Cairo, Egypt",
+  location: "Giza, Egypt",
   email: "polamounir103@gmail.com",
   github: "LINK_TO_POLA_GITHUB",
   linkedin: "LINK_TO_POLA_LINKEDIN",
@@ -130,6 +130,18 @@ const SKILL_DATA: Skill[] = [
 
 const PROJECT_DATA: Project[] = [
   {
+    id: 0,
+    title: "Fast-Box",
+    description: "Fastest and reliable courier service",
+    tech: ["React.js", "React Router", "JavaScript", "Tailwind CSS"],
+    github: "https://github.com/polamounir/Fast-box",
+    live: "https://fast-box-shipment.vercel.app/",
+    lines: "1,000+",
+    image: "🚚",
+    status: "Active Dev",
+    imgSrc: "https://picsum.photos/seed/ecommerce/600/400",
+  },
+  {
     id: 1,
     title: "Electroo E-commerce",
     description:
@@ -143,8 +155,8 @@ const PROJECT_DATA: Project[] = [
       "React Query",
       "Charts.js",
     ],
-    github: "#",
-    live: "Live Demo →",
+    github: "https://github.com/polamounir/electroo",
+    live: "https://electroo.vercel.app/",
     lines: "15,000+",
     image: "🛒",
     status: "Production",
@@ -156,8 +168,8 @@ const PROJECT_DATA: Project[] = [
     description:
       "A healthcare application for predicting medical conditions using machine learning algorithms.",
     tech: ["React.js", "JavaScript", "Tailwind CSS", "AI Integration"],
-    github: "#",
-    live: "Live Demo →",
+    github: "https://github.com/polamounir/medical-predictions",
+    live: "https://medical-prediction.vercel.app/",
     lines: "8,000+",
     image: "🧠",
     status: "Beta",
@@ -169,8 +181,8 @@ const PROJECT_DATA: Project[] = [
     description:
       "A dynamic course platform with exam systems, CV builders, and user role-based dashboards, improving user engagement and accessibility.",
     tech: ["React.js", "JavaScript", "Bootstrap", "Redux Toolkit"],
-    github: "#",
-    live: "Live Demo →",
+    github: "https://github.com/polamounir/SEF",
+    live: "https://sef-gold.vercel.app/",
     lines: "12,000+",
     image: "🎓",
     status: "Production",
@@ -188,8 +200,8 @@ const PROJECT_DATA: Project[] = [
       "Weather API",
       "Geolocation",
     ],
-    github: "#",
-    live: "Live Demo →",
+    github: "https://github.com/polamounir/Weather-app",
+    live: "https://weather-app-eight-kappa-91.vercel.app/",
     lines: "5,000+",
     image: "🌦️",
     status: "Production",
