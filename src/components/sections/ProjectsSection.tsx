@@ -92,6 +92,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               <a
                 href={project.live}
                 onClick={(e) => e.stopPropagation()}
+                target="_blank"
                 className="text-gray-400 hover:text-green-400 transition-colors p-2 hover:bg-green-500/10 rounded"
               >
                 <ExternalLink className="w-5 h-5" />

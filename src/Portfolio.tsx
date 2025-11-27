@@ -3,6 +3,11 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { AnimatePresence, motion, type Transition } from "framer-motion";
 import { Code, Cpu, Database } from "lucide-react";
+import project1 from "./assets/projects/p11.png"
+import project2 from "./assets/projects/p21.png"
+import project3 from "./assets/projects/p31.png"
+import project4 from "./assets/projects/p41.png"
+import project5 from "./assets/projects/p51.png"
 
 // --- LAZY LOADING IMPORTS (MAX SEO/PERFORMANCE) ---
 // Note: We use React.lazy for the large content sections
@@ -139,8 +144,7 @@ const PROJECT_DATA: Project[] = [
     lines: "1,000+",
     image: "🚚",
     status: "Active Dev",
-    imgSrc:
-      "https://mindster.com/mindster-blogs/wp-content/uploads/2020/07/hyper-local-delivery.jpg",
+    imgSrc:project1
   },
   {
     id: 1,
@@ -161,8 +165,7 @@ const PROJECT_DATA: Project[] = [
     lines: "15,000+",
     image: "🛒",
     status: "Production",
-    imgSrc:
-      "https://devtorium.com/wp-content/webp-express/webp-images/uploads/2021/08/blog_internal-image_-_10_Best_eCommerce_Platforms-5.png.webp",
+    imgSrc:project2
   },
   {
     id: 2,
@@ -175,8 +178,7 @@ const PROJECT_DATA: Project[] = [
     lines: "8,000+",
     image: "🧠",
     status: "Beta",
-    imgSrc:
-      "https://www.news-medical.net/images/news/ImageForNews_712799_16517554860339063.jpg",
+    imgSrc:project3
   },
   {
     id: 3,
@@ -189,8 +191,7 @@ const PROJECT_DATA: Project[] = [
     lines: "12,000+",
     image: "🎓",
     status: "Production",
-    imgSrc:
-      "https://foundr.com/wp-content/uploads/2021/09/Best-online-course-platforms.png",
+    imgSrc:project4
   },
   {
     id: 4,
@@ -209,8 +210,7 @@ const PROJECT_DATA: Project[] = [
     lines: "5,000+",
     image: "🌦️",
     status: "Production",
-    imgSrc:
-      "https://store-images.s-microsoft.com/image/apps.6094.14354997847412956.ef63f72a-4ac8-4432-8778-7105ccbec117.4f77c938-04ea-47ff-8ca2-273e51145371?h=1280",
+    imgSrc:project5
   },
 ];
 

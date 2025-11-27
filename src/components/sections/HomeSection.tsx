@@ -24,7 +24,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({
     { label: "Years Exp", value: "1+", color: "green" },
     { label: "Projects", value: "4+", color: "cyan" },
     { label: "Code Lines", value: "40K+", color: "purple" },
-    { label: "Location", value: "Cairo, EGY", color: "blue" },
+    { label: "Location", value: "Giza, EGY", color: "blue" },
   ];
 
   return (
