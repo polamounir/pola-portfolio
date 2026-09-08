@@ -1,0 +1,7 @@
+# Robots.txt for Pola Mounir Portfolio
+User-agent: *
+Allow: /
+
+# Host & Sitemap
+Host: https://pola-mounir.vercel.app
+Sitemap: https://pola-mounir.vercel.app/sitemap.xml

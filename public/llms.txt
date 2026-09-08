@@ -1,0 +1,15 @@
+# Pola Mounir - React Frontend Developer Portfolio
+
+> Official personal developer portfolio of Pola Mounir, showcasing web development projects, technical skills, career history, and contact details.
+
+## Core Sections & Links
+
+- [Official Web Portfolio](https://pola-mounir.vercel.app/): Interactive web developer portfolio featuring project demos, live applications, and technical stack specifications.
+- [GitHub Profile](https://github.com/polamounir): Code repositories, open source contributions, and web application source code.
+- [LinkedIn Profile](https://www.linkedin.com/in/pola-mounir-samir/): Career experience, professional history, and networking.
+
+## Primary Technologies
+- React.js & TypeScript
+- Modern Frontend Web Architecture
+- Tailwind CSS & Framer Motion
+- Node.js & REST APIs

@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+:root {
+  --app-primary: #4ade80;
+  --app-primary-dark: #22c55e;
+  --app-secondary: #22d3ee;
+  --app-secondary-dark: #06b6d4;
+  --app-bg: #030712;
+  --app-card-bg: #111827;
+  --app-card-sub: #1f2937;
+  --app-glow: #22c55e;
+  --app-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@theme {
+  --color-green-400: var(--app-primary);
+  --color-green-500: var(--app-primary-dark);
+  --color-green-600: var(--app-primary-dark);
+  --color-cyan-400: var(--app-secondary);
+  --color-cyan-500: var(--app-secondary-dark);
+  --color-gray-950: var(--app-bg);
+  --color-gray-900: var(--app-card-bg);
+  --color-gray-800: var(--app-card-sub);
+  --font-mono: var(--app-font);
+}
+
+@layer base {
+  /* Smooth scroll behavior & scrollbar styling */
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--app-bg);
+    font-family: var(--app-font);
+    scrollbar-width: thin;
+    scrollbar-color: var(--app-primary) var(--app-bg);
+  }
+
+  body {
+    background-color: var(--app-bg);
+    font-family: var(--app-font);
+  }
+
+  ::selection {
+    background-color: var(--app-primary);
+    color: #030712;
+  }
+}
+
+/* Webkit Scrollbar Styling (Chrome, Edge, Safari, Opera) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--app-bg);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--app-primary) 0%, var(--app-secondary) 100%);
+  border-radius: 9999px;
+  border: 2px solid var(--app-bg);
+  transition: all 0.2s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--app-primary);
+  box-shadow: 0 0 12px var(--app-primary);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--app-bg);
+}

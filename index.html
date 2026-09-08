@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Preconnect to critical origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://res.cloudinary.com" />
+
+    <!-- Preload font CSS without blocking render -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+      />
+    </noscript>
+
+    <!-- Inline critical styles for instant FCP -->
+    <style>
+      html, body { background-color: #030712; color: #f3f4f6; margin: 0; }
+      #root { min-height: 100vh; }
+    </style>
+
+    <!-- Primary Page Title & Search Intent -->
+    <title>Pola Mounir | React Frontend Developer - Web Portfolio</title>
+    
+    <!-- Core SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Official portfolio of Pola Mounir, React.js & Modern Frontend Web Developer based in Egypt. Building high-performance web applications, scalable user interfaces, JavaScript, TypeScript, and modern frontend architecture."
+    />
+    <meta
+      name="keywords"
+      content="Pola Mounir, Pola Mounir Web, Pola Mounir Samir, Pola Mounir developer, Pola Mounir React, React frontend developer, web developer egypt, portfolio, frontend engineer, JavaScript developer, TypeScript"
+    />
+    <meta name="author" content="Pola Mounir" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://pola-mounir.vercel.app/" />
+    
+    <!-- Theme & Mobile Optimization -->
+    <meta name="theme-color" content="#030712" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Open Graph / Facebook / LinkedIn / Discord -->
+    <meta property="og:type" content="profile" />
+    <meta property="profile:first_name" content="Pola" />
+    <meta property="profile:last_name" content="Mounir" />
+    <meta property="profile:username" content="polamounir" />
+    <meta property="og:site_name" content="Pola Mounir Portfolio" />
+    <meta property="og:title" content="Pola Mounir | React Frontend Developer" />
+    <meta
+      property="og:description"
+      content="Official portfolio of Pola Mounir - React & Frontend Web Developer. Explore projects, technical skills, interactive demos, and code repositories."
+    />
+    <meta property="og:url" content="https://pola-mounir.vercel.app/" />
+    <meta property="og:image" content="https://pola-mounir.vercel.app/og-preview.png" />
+    <meta property="og:image:alt" content="Pola Mounir - React Frontend Web Developer Portfolio" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pola Mounir | React Frontend Developer" />
+    <meta
+      name="twitter:description"
+      content="Portfolio of Pola Mounir - React.js, TypeScript & Modern Frontend Web Developer."
+    />
+    <meta name="twitter:image" content="https://pola-mounir.vercel.app/og-preview.png" />
+    <meta name="twitter:creator" content="@polamounir" />
+
+    <!-- Structured Data (JSON-LD) for Google Knowledge Graph & Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://pola-mounir.vercel.app/#person",
+          "name": "Pola Mounir",
+          "alternateName": [
+            "Pola Mounir Samir",
+            "Pola Mounir Web",
+            "pola mounir developer",
+            "Pola"
+          ],
+          "url": "https://pola-mounir.vercel.app/",
+          "image": "https://pola-mounir.vercel.app/og-preview.png",
+          "jobTitle": "React Frontend Developer",
+          "description": "Frontend Web Developer specializing in React.js, TypeScript, and modern responsive web applications.",
+          "email": "mailto:polamounir103@gmail.com",
+          "nationality": "Egyptian",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Giza",
+            "addressCountry": "Egypt"
+          },
+          "sameAs": [
+            "https://github.com/polamounir",
+            "https://www.linkedin.com/in/pola-mounir-samir/",
+            "https://fast-box-shipment.vercel.app/",
+            "https://electroo.vercel.app/"
+          ],
+          "knowsAbout": [
+            "React.js",
+            "JavaScript",
+            "TypeScript",
+            "Frontend Web Development",
+            "Web Applications",
+            "Tailwind CSS",
+            "Next.js",
+            "Redux Toolkit",
+            "Node.js",
+            "REST APIs",
+            "UI/UX Design"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://pola-mounir.vercel.app/#website",
+          "url": "https://pola-mounir.vercel.app/",
+          "name": "Pola Mounir Portfolio",
+          "description": "Official personal developer portfolio of Pola Mounir, showcasing web projects, tech stack, and career history.",
+          "publisher": {
+            "@id": "https://pola-mounir.vercel.app/#person"
+          },
+          "inLanguage": ["en"]
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://pola-mounir.vercel.app/#webpage",
+          "url": "https://pola-mounir.vercel.app/",
+          "name": "Pola Mounir | React Frontend Developer - Web Portfolio",
+          "isPartOf": {
+            "@id": "https://pola-mounir.vercel.app/#website"
+          },
+          "about": {
+            "@id": "https://pola-mounir.vercel.app/#person"
+          },
+          "description": "Official portfolio of Pola Mounir - React & Modern Frontend Web Developer.",
+          "inLanguage": ["en"]
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
