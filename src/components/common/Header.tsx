@@ -46,8 +46,8 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <>
       {/* Desktop Header */}
-      <header className="relative py-5 z-10 border-b border-green-400/30 bg-gray-900/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <header className="relative py-2 sm:py-4 z-10 border-b border-green-400/30 bg-gray-900/50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
             {PERSONAL_INFO.avatarUrl ? (
               <img
@@ -81,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {PERSONAL_INFO.resumeUrl && (
               <a
                 href={PERSONAL_INFO.resumeUrl}
@@ -89,7 +89,7 @@ const Header: React.FC<HeaderProps> = ({
                 rel="noopener noreferrer"
                 title="View Resume / CV"
                 aria-label="View Resume / CV"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-green-500/15 text-green-400 border border-green-400/40 hover:bg-green-500/25 hover:border-green-400 transition-all shadow-[0_0_10px_rgba(34,197,94,0.2)]"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold bg-green-500/15 text-green-400 border border-green-400/40 hover:bg-green-500/25 hover:border-green-400 transition-all shadow-[0_0_10px_rgba(34,197,94,0.2)]"
               >
                 <FileText className="w-3.5 h-3.5" />
                 <span>Resume</span>
