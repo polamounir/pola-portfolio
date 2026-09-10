@@ -40,12 +40,23 @@ async function prerender() {
   const server = await preview({ preview: { port: 4173 } });
   const baseUrl = `http://localhost:4173`;
 
-  const executablePath = getExecutablePath();
-  const browser = await puppeteer.launch({
-    executablePath,
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
-  });
+  let browser;
+  try {
+    const executablePath = getExecutablePath();
+    browser = await puppeteer.launch({
+      executablePath,
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage'],
+    });
+  } catch (err) {
+    console.warn(`Prerender notice: Puppeteer could not launch in this environment (${err.message}).`);
+    await server.close();
+    if (process.env.CI || process.env.VERCEL) {
+      console.log('Skipping Puppeteer prerender in CI environment. Static build and public assets remain intact.');
+      return;
+    }
+    throw err;
+  }
 
   for (const route of ALL_ROUTES) {
     const page = await browser.newPage();
