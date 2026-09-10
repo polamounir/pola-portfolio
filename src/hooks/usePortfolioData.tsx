@@ -45,9 +45,8 @@ export interface UsePortfolioDataReturn {
 
 const DEFAULT_NAV_LINKS: NavItemData[] = [
   { section: "home", label: "home", icon: <Terminal className="w-4 h-4" /> },
-  { section: "skills", label: "skills", icon: <Cpu className="w-4 h-4" /> },
+  { section: "about", label: "about", icon: <Cpu className="w-4 h-4" /> },
   { section: "projects", label: "projects", icon: <Folder className="w-4 h-4" /> },
-  { section: "experience", label: "experience", icon: <GitBranch className="w-4 h-4" /> },
   { section: "contact", label: "contact", icon: <Mail className="w-4 h-4" /> },
 ];
 
@@ -293,15 +292,25 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
 
           // 5. Navigation links sync
           if (navRes && navRes.length > 0) {
-            const mappedNav: NavItemData[] = navRes.map((n) => {
+            const seen = new Set<string>();
+            const mappedNav: NavItemData[] = [];
+            for (const n of navRes) {
               const rawPath = (n.path || "").replace(/^#/, "").trim().toLowerCase();
-              const section = rawPath || n.name.toLowerCase();
-              return {
-                section,
-                label: n.name.toLowerCase(),
-                icon: getNavIcon(n.name),
-              };
-            });
+              let section = rawPath || n.name.toLowerCase();
+              let label = n.name.toLowerCase();
+              if (section === "skills" || section === "experience" || section === "about") {
+                section = "about";
+                label = "about";
+              }
+              if (!seen.has(section)) {
+                seen.add(section);
+                mappedNav.push({
+                  section,
+                  label,
+                  icon: section === "about" ? <Cpu className="w-4 h-4" /> : getNavIcon(n.name),
+                });
+              }
+            }
             setNavigationLinks(mappedNav);
           }
         });

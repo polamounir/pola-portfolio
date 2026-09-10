@@ -4,7 +4,6 @@ import {
   Terminal,
   Cpu,
   Folder,
-  GitBranch,
   Mail,
   Github,
   Linkedin,
@@ -22,16 +21,11 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const defaultNavItems = [
     { section: "home", label: "home", icon: <Terminal className="w-4 h-4" /> },
-    { section: "skills", label: "skills", icon: <Cpu className="w-4 h-4" /> },
+    { section: "about", label: "about", icon: <Cpu className="w-4 h-4" /> },
     {
       section: "projects",
       label: "projects",
       icon: <Folder className="w-4 h-4" />,
-    },
-    {
-      section: "experience",
-      label: "experience",
-      icon: <GitBranch className="w-4 h-4" />,
     },
     {
       section: "contact",
