@@ -2,7 +2,10 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Preconnect to critical origins -->
@@ -14,13 +17,13 @@
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Inter:wght@400;600;700&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Inter:wght@400;600;700&display=swap"
       />
     </noscript>
 
@@ -30,30 +33,29 @@
       #root { min-height: 100vh; }
     </style>
 
-    <!-- Primary Page Title & Search Intent -->
-    <title>Pola Mounir | React Frontend Developer - Web Portfolio</title>
+    <!-- Primary Page Title & Search Intent (Unified across title & og:title) -->
+    <title>Pola Mounir | React Frontend Developer</title>
     
-    <!-- Core SEO Meta Tags -->
+    <!-- Core SEO Meta Tags (~150 chars description) -->
     <meta
       name="description"
-      content="Official portfolio of Pola Mounir, React.js & Modern Frontend Web Developer based in Egypt. Building high-performance web applications, scalable user interfaces, JavaScript, TypeScript, and modern frontend architecture."
+      content="Pola Mounir is a React Frontend Developer based in Giza, Egypt, crafting fast, accessible, and responsive web applications with React.js, TypeScript, and Tailwind CSS."
     />
     <meta
       name="keywords"
-      content="Pola Mounir, Pola Mounir Web, Pola Mounir Samir, Pola Mounir developer, Pola Mounir React, React frontend developer, web developer egypt, portfolio, frontend engineer, JavaScript developer, TypeScript"
+      content="Pola Mounir, Pola Mounir Samir, React frontend developer, frontend engineer Egypt, React developer, TypeScript developer, web portfolio, UI developer"
     />
     <meta name="author" content="Pola Mounir" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large" />
-    <link rel="canonical" href="https://pola-mounir.vercel.app/" />
     
     <!-- Theme & Mobile Optimization -->
     <meta name="theme-color" content="#030712" />
     <meta name="color-scheme" content="dark" />
     <meta name="format-detection" content="telephone=no" />
 
-    <!-- Open Graph / Facebook / LinkedIn / Discord -->
+    <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="profile" />
     <meta property="profile:first_name" content="Pola" />
     <meta property="profile:last_name" content="Mounir" />
@@ -62,22 +64,21 @@
     <meta property="og:title" content="Pola Mounir | React Frontend Developer" />
     <meta
       property="og:description"
-      content="Official portfolio of Pola Mounir - React & Frontend Web Developer. Explore projects, technical skills, interactive demos, and code repositories."
+      content="Pola Mounir is a React Frontend Developer based in Giza, Egypt, crafting fast, accessible, and responsive web applications with React.js, TypeScript, and Tailwind CSS."
     />
     <meta property="og:url" content="https://pola-mounir.vercel.app/" />
     <meta property="og:image" content="https://pola-mounir.vercel.app/og-preview.png" />
     <meta property="og:image:alt" content="Pola Mounir - React Frontend Web Developer Portfolio" />
     <meta property="og:locale" content="en_US" />
 
-    <!-- Twitter Card -->
+    <!-- Twitter Card (No inactive twitter:creator tag) -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Pola Mounir | React Frontend Developer" />
     <meta
       name="twitter:description"
-      content="Portfolio of Pola Mounir - React.js, TypeScript & Modern Frontend Web Developer."
+      content="Pola Mounir is a React Frontend Developer based in Giza, Egypt, crafting fast, accessible, and responsive web applications with React.js, TypeScript, and Tailwind CSS."
     />
     <meta name="twitter:image" content="https://pola-mounir.vercel.app/og-preview.png" />
-    <meta name="twitter:creator" content="@polamounir" />
 
     <!-- Structured Data (JSON-LD) for Google Knowledge Graph & Rich Snippets -->
     <script type="application/ld+json">
@@ -107,9 +108,7 @@
           },
           "sameAs": [
             "https://github.com/polamounir",
-            "https://www.linkedin.com/in/pola-mounir-samir/",
-            "https://fast-box-shipment.vercel.app/",
-            "https://electroo.vercel.app/"
+            "https://www.linkedin.com/in/pola-mounir-samir/"
           ],
           "knowsAbout": [
             "React.js",
@@ -118,10 +117,11 @@
             "Frontend Web Development",
             "Web Applications",
             "Tailwind CSS",
-            "Next.js",
             "Redux Toolkit",
             "Node.js",
             "REST APIs",
+            "Responsive Web Design",
+            "Web Accessibility",
             "UI/UX Design"
           ]
         },
@@ -140,14 +140,14 @@
           "@type": "WebPage",
           "@id": "https://pola-mounir.vercel.app/#webpage",
           "url": "https://pola-mounir.vercel.app/",
-          "name": "Pola Mounir | React Frontend Developer - Web Portfolio",
+          "name": "Pola Mounir | React Frontend Developer",
           "isPartOf": {
             "@id": "https://pola-mounir.vercel.app/#website"
           },
           "about": {
             "@id": "https://pola-mounir.vercel.app/#person"
           },
-          "description": "Official portfolio of Pola Mounir - React & Modern Frontend Web Developer.",
+          "description": "Pola Mounir is a React Frontend Developer based in Giza, Egypt, crafting fast, accessible, and responsive web applications with React.js, TypeScript, and Tailwind CSS.",
           "inLanguage": ["en"]
         }
       ]

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Terminal,
   Cpu,
@@ -53,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({
       {/* Desktop Header */}
       <header className="relative py-5 z-10 border-b border-green-400/30 bg-gray-900/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
             {PERSONAL_INFO.avatarUrl ? (
               <img
                 src={PERSONAL_INFO.avatarUrl}
@@ -72,7 +73,7 @@ const Header: React.FC<HeaderProps> = ({
               <div className="text-green-400 text-lg font-bold">dev@pola</div>
               <div className="text-xs text-gray-400">~/system/online</div>
             </div>
-          </div>
+          </Link>
 
           <nav className="hidden md:flex items-center gap-3">
             {navItems.map((item) => (

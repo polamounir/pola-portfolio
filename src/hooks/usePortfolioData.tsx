@@ -222,8 +222,18 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
 
               const thumb = bp.images?.thumbnail || bp.thumbnailUrl || (DEFAULT_PROJECT_DATA[idx]?.imgSrc || "");
 
+              const projectSlug =
+                (bp as { slug?: string }).slug ||
+                DEFAULT_PROJECT_DATA[idx]?.slug ||
+                bp.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+              const defaultProj =
+                DEFAULT_PROJECT_DATA.find((dp) => dp.slug === projectSlug) ||
+                DEFAULT_PROJECT_DATA[idx];
+
               return {
                 id: bp._id || idx,
+                slug: projectSlug,
                 title: bp.title,
                 description: bp.description,
                 tech: bp.technologies || [],
@@ -234,6 +244,8 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
                 status: (bp.status as "Production" | "Beta" | "Active Dev") || "Production",
                 imgSrc: thumb,
                 fullDescription: bp.description,
+                datePublished: (bp as any).datePublished || defaultProj?.datePublished,
+                dateModified: (bp as any).dateModified || defaultProj?.dateModified,
               };
             });
             setProjects(mappedProjects);

@@ -16,6 +16,7 @@ export interface PersonalInfo {
 
 export interface Project {
   id: number | string;
+  slug: string;
   title: string;
   description: string;
   tech: string[];
@@ -26,6 +27,8 @@ export interface Project {
   status: "Production" | "Beta" | "Active Dev";
   imgSrc: string;
   fullDescription?: string;
+  datePublished?: string;
+  dateModified?: string;
 }
 
 export interface Skill {

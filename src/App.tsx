@@ -1,18 +1,18 @@
-import React, { useState, Suspense } from "react";
+import React, { Suspense } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, type Transition } from "framer-motion";
 import { Header, Footer, SEO } from "./components/common";
 import { BackgroundGrid, CursorGlow } from "./components/ui";
 import { MaintenanceBanner } from "./components/popups";
 import { useTypewriter, usePortfolioData } from "./hooks";
-import type { Project } from "./types";
 
-// --- Lazy-Loaded Feature Modules (SEO & Bundle Optimization) ---
-const ProjectDetail = React.lazy(() => import("./components/modals/ProjectDetail"));
-const HomeSection = React.lazy(() => import("./components/sections/HomeSection"));
-const SkillsSection = React.lazy(() => import("./components/sections/SkillsSection"));
-const ProjectsSection = React.lazy(() => import("./components/sections/ProjectsSection"));
-const ExperienceSection = React.lazy(() => import("./components/sections/ExperienceSection"));
-const ContactSection = React.lazy(() => import("./components/sections/ContactSection"));
+// --- Route-Driven Feature Modules ---
+import HomeSection from "./components/sections/HomeSection";
+import ProjectsSection from "./components/sections/ProjectsSection";
+import ContactSection from "./components/sections/ContactSection";
+import AboutPage from "./components/pages/AboutPage";
+import ProjectPage from "./components/pages/ProjectPage";
+import NotFoundPage from "./components/pages/NotFoundPage";
 
 // Framer Motion Page Transition Variants
 const pageVariants = {
@@ -28,8 +28,7 @@ const pageTransition: Transition = {
 };
 
 const App: React.FC = () => {
-  const [currentSection, setCurrentSection] = useState<string>("home");
-  const [currentProject, setCurrentProject] = useState<Project | null>(null);
+  const location = useLocation();
 
   // Custom interaction hooks
   const terminalText = useTypewriter("Hello", 150);
@@ -83,7 +82,6 @@ const App: React.FC = () => {
       root.style.setProperty("--app-font", themeConfig.fontFamily);
 
       const rawFontName = themeConfig.fontFamily.split(",")[0].replace(/['"]/g, "").trim();
-      // Skip injection for the default font — it's already preloaded in index.html
       if (rawFontName === "JetBrains Mono") return;
 
       const FONT_URLS: Record<string, string> = {
@@ -108,6 +106,18 @@ const App: React.FC = () => {
     }
   }, [themeConfig]);
 
+  // Derive current section for legacy navigation sync
+  const currentSection =
+    location.pathname === "/"
+      ? "home"
+      : location.pathname === "/about"
+      ? "skills"
+      : location.pathname.startsWith("/projects")
+      ? "projects"
+      : location.pathname === "/contact"
+      ? "contact"
+      : "home";
+
   return (
     <div
       className="min-h-screen bg-gray-950 text-gray-100 font-mono relative overflow-hidden"
@@ -115,31 +125,34 @@ const App: React.FC = () => {
         fontFamily: "var(--app-font, inherit)",
       }}
     >
-      {/* Dynamic SEO Title & Meta Management */}
-      <SEO currentSection={currentSection} name={personalInfo.name} />
-
       {/* Background Matrix Grid */}
       <BackgroundGrid />
 
       {/* Interactive Cursor Glow */}
       <CursorGlow />
 
+      {/* Accessibility: Skip to Main Content */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-green-500 focus:text-black focus:font-bold focus:rounded-md focus:shadow-lg focus:outline-none"
+      >
+        Skip to main content
+      </a>
+
       {/* Header Navigation */}
-      <Suspense fallback={null}>
-        <Header
-          currentSection={currentSection}
-          setCurrentSection={setCurrentSection}
-          setCurrentProject={setCurrentProject}
-          PERSONAL_INFO={personalInfo}
-          navLinks={navigationLinks}
-        />
-      </Suspense>
+      <Header
+        currentSection={currentSection}
+        setCurrentSection={() => {}}
+        setCurrentProject={() => {}}
+        PERSONAL_INFO={personalInfo}
+        navLinks={navigationLinks}
+      />
 
       {/* Main Content Transition Container */}
-      <main className="relative z-10 max-w-7xl mx-auto px-6 py-12 min-h-[75dvh]">
+      <main id="main-content" className="relative z-10 max-w-7xl mx-auto px-6 py-12 min-h-[75dvh]">
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentSection}
+            key={location.pathname}
             initial="initial"
             animate="in"
             exit="out"
@@ -149,67 +162,85 @@ const App: React.FC = () => {
             <Suspense
               fallback={
                 <div className="text-center min-h-[85dvh] py-20 text-green-400/50 flex justify-center items-center font-mono">
-                  $ loading_module --section {currentSection}...
+                  $ loading_module --route {location.pathname}...
                 </div>
               }
             >
-              {currentSection === "home" && (
-                <HomeSection
-                  terminalText={terminalText}
-                  fullText="Hello"
-                  PERSONAL_INFO={personalInfo}
-                  ABOUT_ME_SUMMARY={aboutMe}
-                  PROJECT_DATA={projects}
+              <Routes location={location}>
+                <Route
+                  path="/"
+                  element={
+                    <>
+                      <SEO />
+                      <HomeSection
+                        terminalText={terminalText}
+                        fullText="Hello"
+                        PERSONAL_INFO={personalInfo}
+                        ABOUT_ME_SUMMARY={aboutMe}
+                        PROJECT_DATA={projects}
+                      />
+                    </>
+                  }
                 />
-              )}
-
-              {currentSection === "skills" && (
-                <SkillsSection
-                  skills={skills}
-                  PROJECT_DATA={projects}
+                <Route
+                  path="/about"
+                  element={
+                    <AboutPage
+                      personalInfo={personalInfo}
+                      aboutMe={aboutMe}
+                      skills={skills}
+                      experience={experience}
+                      projects={projects}
+                    />
+                  }
                 />
-              )}
-
-              {currentSection === "projects" && (
-                <ProjectsSection
-                  projects={projects}
-                  setCurrentProject={setCurrentProject}
-                  PERSONAL_INFO={personalInfo}
+                <Route
+                  path="/projects"
+                  element={
+                    <>
+                      <SEO />
+                      <ProjectsSection
+                        projects={projects}
+                        setCurrentProject={() => {}}
+                        PERSONAL_INFO={personalInfo}
+                        isStandalonePage={true}
+                      />
+                    </>
+                  }
                 />
-              )}
-
-              {currentSection === "experience" && (
-                <ExperienceSection
-                  experience={experience}
-                  PERSONAL_INFO={personalInfo}
+                <Route
+                  path="/projects/:slug"
+                  element={
+                    <ProjectPage
+                      projects={projects}
+                      personalInfo={personalInfo}
+                    />
+                  }
                 />
-              )}
-
-              {currentSection === "contact" && (
-                <ContactSection
-                  PERSONAL_INFO={personalInfo}
-                  formData={formData}
-                  setFormData={setFormData}
-                  handleSubmit={handleSubmit}
-                  submissionStatus={submissionStatus}
+                <Route
+                  path="/contact"
+                  element={
+                    <>
+                      <SEO />
+                      <ContactSection
+                        PERSONAL_INFO={personalInfo}
+                        formData={formData}
+                        setFormData={setFormData}
+                        handleSubmit={handleSubmit}
+                        submissionStatus={submissionStatus}
+                      />
+                    </>
+                  }
                 />
-              )}
+                <Route path="/skills" element={<Navigate to="/about" replace />} />
+                <Route path="/experience" element={<Navigate to="/about" replace />} />
+                <Route path="/404" element={<NotFoundPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
             </Suspense>
           </motion.div>
         </AnimatePresence>
       </main>
-
-      {/* Project Detail Modal */}
-      <AnimatePresence>
-        {currentProject && (
-          <Suspense fallback={null}>
-            <ProjectDetail
-              project={currentProject}
-              onClose={() => setCurrentProject(null)}
-            />
-          </Suspense>
-        )}
-      </AnimatePresence>
 
       {/* Clean Shared Footer */}
       <Footer name={personalInfo.name} />

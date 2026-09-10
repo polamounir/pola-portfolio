@@ -1,0 +1,91 @@
+[
+  {
+    "id": 0,
+    "slug": "fast-box",
+    "title": "Fast-Box",
+    "description": "Fastest and reliable courier service with real-time shipment tracking, route visualization, and responsive customer interface.",
+    "tech": ["React.js", "React Router", "JavaScript", "Tailwind CSS"],
+    "github": "https://github.com/polamounir/Fast-box",
+    "live": "https://fast-box-shipment.vercel.app/",
+    "lines": "1,000+",
+    "image": "🚚",
+    "status": "Active Dev",
+    "datePublished": "2024-05-15",
+    "dateModified": "2026-06-15",
+    "imgKey": "p11"
+  },
+  {
+    "id": 1,
+    "slug": "electroo",
+    "title": "Electroo E-commerce",
+    "description": "A full-featured e-commerce platform for electronic products with user authentication, product catalog, shopping cart, and checkout functionality.",
+    "tech": [
+      "React.js",
+      "JavaScript",
+      "Tailwind CSS",
+      "Redux Toolkit",
+      "Axios",
+      "React Query",
+      "Charts.js"
+    ],
+    "github": "https://github.com/polamounir/electroo",
+    "live": "https://electroo.vercel.app/",
+    "lines": "15,000+",
+    "image": "🛒",
+    "status": "Production",
+    "datePublished": "2024-08-10",
+    "dateModified": "2026-07-20",
+    "imgKey": "p21"
+  },
+  {
+    "id": 2,
+    "slug": "medical-predictions",
+    "title": "Medical Prediction System",
+    "description": "A healthcare application for predicting medical conditions using machine learning algorithms and interactive medical data forms.",
+    "tech": ["React.js", "JavaScript", "Tailwind CSS", "AI Integration"],
+    "github": "https://github.com/polamounir/medical-predictions",
+    "live": "https://medical-prediction.vercel.app/",
+    "lines": "8,000+",
+    "image": "🧠",
+    "status": "Beta",
+    "datePublished": "2024-11-05",
+    "dateModified": "2025-09-12",
+    "imgKey": "p31"
+  },
+  {
+    "id": 3,
+    "slug": "sef-gold",
+    "title": "SEF Gold",
+    "description": "A dynamic course platform with exam systems, CV builders, and user role-based dashboards, improving user engagement and accessibility.",
+    "tech": ["React.js", "JavaScript", "Bootstrap", "Redux Toolkit"],
+    "github": "https://github.com/polamounir/SEF",
+    "live": "https://sef-gold.vercel.app/",
+    "lines": "12,000+",
+    "image": "🎓",
+    "status": "Production",
+    "datePublished": "2024-03-20",
+    "dateModified": "2025-06-18",
+    "imgKey": "p41"
+  },
+  {
+    "id": 4,
+    "slug": "weather-app",
+    "title": "Weather Application",
+    "description": "Real-time weather forecast application with location-based weather data, dynamic meteorological conditions, and interactive maps.",
+    "tech": [
+      "React.js",
+      "JavaScript",
+      "Tailwind CSS",
+      "Weather API",
+      "Geolocation"
+    ],
+    "github": "https://github.com/polamounir/Weather-app",
+    "live": "https://weather-app-eight-kappa-91.vercel.app/",
+    "lines": "5,000+",
+    "image": "🌦️",
+    "status": "Production",
+    "datePublished": "2023-11-10",
+    "dateModified": "2024-10-05",
+    "imgKey": "p51"
+  }
+]

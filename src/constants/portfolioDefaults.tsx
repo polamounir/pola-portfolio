@@ -87,86 +87,33 @@ export const DEFAULT_SKILL_DATA: Skill[] = [
   },
 ];
 
-export const DEFAULT_PROJECT_DATA: Project[] = [
-  {
-    id: 0,
-    title: "Fast-Box",
-    description: "Fastest and reliable courier service",
-    tech: ["React.js", "React Router", "JavaScript", "Tailwind CSS"],
-    github: "https://github.com/polamounir/Fast-box",
-    live: "https://fast-box-shipment.vercel.app/",
-    lines: "1,000+",
-    image: "🚚",
-    status: "Active Dev",
-    imgSrc: project1,
-  },
-  {
-    id: 1,
-    title: "Electroo E-commerce",
-    description:
-      "A full-featured e-commerce platform for electronic products with user authentication, product catalog, shopping cart, and checkout functionality.",
-    tech: [
-      "React.js",
-      "JavaScript",
-      "Tailwind CSS",
-      "Redux Toolkit",
-      "Axios",
-      "React Query",
-      "Charts.js",
-    ],
-    github: "https://github.com/polamounir/electroo",
-    live: "https://electroo.vercel.app/",
-    lines: "15,000+",
-    image: "🛒",
-    status: "Production",
-    imgSrc: project2,
-  },
-  {
-    id: 2,
-    title: "Medical Prediction System",
-    description:
-      "A healthcare application for predicting medical conditions using machine learning algorithms.",
-    tech: ["React.js", "JavaScript", "Tailwind CSS", "AI Integration"],
-    github: "https://github.com/polamounir/medical-predictions",
-    live: "https://medical-prediction.vercel.app/",
-    lines: "8,000+",
-    image: "🧠",
-    status: "Beta",
-    imgSrc: project3,
-  },
-  {
-    id: 3,
-    title: "SEF Gold",
-    description:
-      "A dynamic course platform with exam systems, CV builders, and user role-based dashboards, improving user engagement and accessibility.",
-    tech: ["React.js", "JavaScript", "Bootstrap", "Redux Toolkit"],
-    github: "https://github.com/polamounir/SEF",
-    live: "https://sef-gold.vercel.app/",
-    lines: "12,000+",
-    image: "🎓",
-    status: "Production",
-    imgSrc: project4,
-  },
-  {
-    id: 4,
-    title: "Weather Application",
-    description:
-      "Real-time weather forecast application with location-based weather data and interactive maps.",
-    tech: [
-      "React.js",
-      "JavaScript",
-      "Tailwind CSS",
-      "Weather API",
-      "Geolocation",
-    ],
-    github: "https://github.com/polamounir/Weather-app",
-    live: "https://weather-app-eight-kappa-91.vercel.app/",
-    lines: "5,000+",
-    image: "🌦️",
-    status: "Production",
-    imgSrc: project5,
-  },
-];
+import rawProjects from "../data/projects.json";
+
+const PROJECT_IMAGES: Record<string, string> = {
+  p11: project1,
+  p21: project2,
+  p31: project3,
+  p41: project4,
+  p51: project5,
+};
+
+export const DEFAULT_PROJECT_DATA: Project[] = rawProjects.map((p) => ({
+  id: p.id,
+  slug: p.slug,
+  title: p.title,
+  description: p.description,
+  tech: p.tech,
+  github: p.github,
+  live: p.live,
+  lines: p.lines,
+  image: p.image,
+  status: p.status as "Production" | "Beta" | "Active Dev",
+  imgSrc: PROJECT_IMAGES[p.imgKey] || project1,
+  datePublished: p.datePublished,
+  dateModified: p.dateModified,
+}));
+
+export const PROJECTS = DEFAULT_PROJECT_DATA;
 
 export const DEFAULT_EXPERIENCE_DATA: ExperienceItem[] = [
   {
