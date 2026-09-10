@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { HelpCircle } from "lucide-react";
 import type { PersonalInfo, Skill, ExperienceItem, Project } from "../../types";
@@ -20,6 +20,17 @@ const AboutPage: React.FC<AboutPageProps> = ({
   experience,
   projects,
 }) => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const elem = document.querySelector(location.hash);
+      if (elem) {
+        elem.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location.hash]);
+
   const canonicalUrl = "https://pola-mounir.vercel.app/about";
   const metaDescription =
     "Pola Mounir is a React Frontend Developer based in Giza, Egypt, specializing in responsive web applications, component architecture, and modern web technologies.";
@@ -96,12 +107,12 @@ const AboutPage: React.FC<AboutPageProps> = ({
       </section>
 
       {/* Skills Section Component */}
-      <section>
+      <section id="skills">
         <SkillsSection skills={skills} PROJECT_DATA={projects} />
       </section>
 
       {/* Experience Section Component */}
-      <section>
+      <section id="experience">
         <ExperienceSection experience={experience} PERSONAL_INFO={personalInfo} />
       </section>
 

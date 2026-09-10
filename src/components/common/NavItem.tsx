@@ -6,9 +6,10 @@ import type { NavItemProps } from "../../utils/types";
 
 const sectionToRoute: Record<string, string> = {
   home: "/",
-  skills: "/about",
+  about: "/about",
+  skills: "/about#skills",
   projects: "/projects",
-  experience: "/about",
+  experience: "/about#experience",
   contact: "/contact",
 };
 
@@ -22,13 +23,22 @@ const NavItem: React.FC<NavItemProps> = ({
   const location = useLocation();
   const targetPath = sectionToRoute[section] || `/${section}`;
   
-  const isActive =
-    (section === "home" && location.pathname === "/") ||
-    (section === "projects" && (location.pathname === "/projects" || location.pathname.startsWith("/projects/"))) ||
-    (section === "skills" && location.pathname === "/about") ||
-    (section === "experience" && location.pathname === "/about") ||
-    (section === "contact" && location.pathname === "/contact") ||
-    location.pathname === targetPath;
+  let isActive = false;
+  if (section === "home") {
+    isActive = location.pathname === "/";
+  } else if (section === "projects") {
+    isActive = location.pathname === "/projects" || location.pathname.startsWith("/projects/");
+  } else if (section === "contact") {
+    isActive = location.pathname === "/contact";
+  } else if (section === "about") {
+    isActive = location.pathname === "/about";
+  } else if (section === "skills") {
+    isActive = location.pathname === "/about" && location.hash !== "#experience";
+  } else if (section === "experience") {
+    isActive = location.pathname === "/about" && location.hash === "#experience";
+  } else {
+    isActive = location.pathname === targetPath;
+  }
 
   return (
     <motion.div
