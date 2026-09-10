@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, type Transition } from "framer-motion";
-import { Code, ArrowRight } from "lucide-react";
+import { Code, ArrowRight, FileText } from "lucide-react";
 import type { HomeSectionProps } from "../../utils/types";
 
 const pageTransition: Transition = { type: "spring", stiffness: 300, damping: 30 };
@@ -70,22 +70,33 @@ const HomeSection: React.FC<HomeSectionProps> = ({
             <div className="text-gray-400 text-sm pt-2">
               // 1+ years of frontend experience | {PROJECT_DATA.length}+ production & active projects
             </div>
-            <div className="pt-4 flex flex-wrap gap-4">
+            <div className="pt-4 flex flex-wrap gap-3 sm:gap-4">
               <Link
                 to="/projects"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/20 text-green-400 border border-green-400/50 hover:bg-green-500/30 transition-all font-semibold text-sm"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-green-500/20 text-green-400 border border-green-400/50 hover:bg-green-500/30 transition-all font-semibold text-sm shadow-md shadow-green-400/10"
               >
                 Explore Projects <ArrowRight className="w-4 h-4" />
               </Link>
+              {PERSONAL_INFO.resumeUrl && (
+                <a
+                  href={PERSONAL_INFO.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-green-500/15 text-green-400 border border-green-400/40 hover:bg-green-500/25 hover:border-green-400 transition-all font-semibold text-sm shadow-md shadow-green-400/10"
+                >
+                  <FileText className="w-4 h-4" />
+                  Download CV
+                </a>
+              )}
               <Link
                 to="/about"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 hover:text-green-400 hover:border-green-400/50 transition-all text-sm"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 hover:text-green-400 hover:border-green-400/50 transition-all text-sm"
               >
                 Read Background & Skills
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 hover:text-green-400 hover:border-green-400/50 transition-all text-sm"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 hover:text-green-400 hover:border-green-400/50 transition-all text-sm"
               >
                 Contact
               </Link>

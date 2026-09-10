@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, FileText } from "lucide-react";
 import type { PersonalInfo, Skill, ExperienceItem, Project } from "../../types";
 import { SkillsSection, ExperienceSection } from "../sections";
 import faqData from "../../data/faq.json";
@@ -90,13 +90,24 @@ const AboutPage: React.FC<AboutPageProps> = ({
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-4 pt-4">
+        <div className="flex flex-wrap gap-3 sm:gap-4 pt-4">
           <Link
             to="/projects"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-500/20 text-green-400 border border-green-400/50 hover:bg-green-500/30 transition-all font-semibold shadow-lg shadow-green-400/10 text-sm"
           >
             View Featured Projects &rarr;
           </Link>
+          {personalInfo.resumeUrl && (
+            <a
+              href={personalInfo.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-500/15 text-green-400 border border-green-400/40 hover:bg-green-500/25 hover:border-green-400 transition-all font-semibold shadow-md shadow-green-400/10 text-sm"
+            >
+              <FileText className="w-4 h-4" />
+              Download Resume / CV
+            </a>
+          )}
           <Link
             to="/contact"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 hover:text-green-400 hover:border-green-400/50 transition-all text-sm"
