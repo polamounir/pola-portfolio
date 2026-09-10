@@ -28,18 +28,16 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
   const skillCategories = dynamicCategories.length > 0 ? dynamicCategories : ["Frontend", "Backend/DB", "Soft Skills"];
   const certs = [
     { name: "React.JS internship", year: "2023" },
-    { name: "Backend using Node.JS", year: "2024" },
     { name: "Frontend using React.JS", year: "2024" },
+    { name: "Backend using Node.JS", year: "2024" },
   ];
   const tools = [
     "VS Code",
     "Git",
     "Postman",
     "Figma",
-    "Docker",
     "Terminal",
-    "Jira",
-    "Slack",
+
   ];
   const stats = [
     { label: "Years Exp", value: "1+", icon: <Code className="w-6 h-6" /> },
