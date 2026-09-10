@@ -13,6 +13,7 @@ export const DEFAULT_PERSONAL_INFO: PersonalInfo = {
   email: "polamounir103@gmail.com",
   github: "https://github.com/polamounir",
   linkedin: "https://www.linkedin.com/in/pola-mounir-samir/",
+  resumeUrl: "/Pola_Mounir_Resume.pdf",
 };
 
 export const DEFAULT_ABOUT_ME_SUMMARY =

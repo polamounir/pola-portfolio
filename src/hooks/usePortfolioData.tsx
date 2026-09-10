@@ -168,6 +168,10 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
 
           // 1. Profile sync
           if (profileRes) {
+            let normalizedResumeUrl = profileRes.resumeUrl || prev.resumeUrl;
+            if (normalizedResumeUrl && normalizedResumeUrl.includes("localhost:5000")) {
+              normalizedResumeUrl = normalizedResumeUrl.replace("http://localhost:5000", "https://pola-portfolio-server.vercel.app");
+            }
             setPersonalInfo((prev) => ({
               ...prev,
               name: profileRes.name || prev.name,
@@ -177,7 +181,7 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
               github: profileRes.socialLinks?.github || prev.github,
               linkedin: profileRes.socialLinks?.linkedin || prev.linkedin,
               avatarUrl: profileRes.avatarUrl || prev.avatarUrl,
-              resumeUrl: profileRes.resumeUrl || prev.resumeUrl,
+              resumeUrl: normalizedResumeUrl || prev.resumeUrl || "/Pola_Mounir_Resume.pdf",
             }));
             if (profileRes.detailedBio) {
               setAboutMe(profileRes.detailedBio);
