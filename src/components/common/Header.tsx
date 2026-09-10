@@ -118,8 +118,8 @@ const Header: React.FC<HeaderProps> = ({
       </header>
 
       {/* Mobile Navigation */}
-      <div className="md:hidden sticky top-0 z-10 bg-gray-900/95 backdrop-blur-sm border-b border-green-400/30 px-4 py-3">
-        <div className="flex gap-2 overflow-x-auto pb-2">
+      <nav aria-label="Mobile Navigation" className="md:hidden sticky top-0 z-10 bg-gray-900/95 backdrop-blur-sm border-b border-green-400/30 px-2.5 py-2">
+        <div className="flex items-center justify-between gap-1 overflow-x-auto no-scrollbar">
           {navItems.map((item) => (
             <NavItem
               key={item.section}
@@ -130,7 +130,7 @@ const Header: React.FC<HeaderProps> = ({
             />
           ))}
         </div>
-      </div>
+      </nav>
     </>
   );
 };

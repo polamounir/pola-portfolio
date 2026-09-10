@@ -40,14 +40,14 @@ const NavItem: React.FC<NavItemProps> = ({
           if (setCurrentSection) setCurrentSection(section);
           if (setCurrentProject) setCurrentProject(null);
         }}
-        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-sm transition-all duration-300 ${
+        className={`flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg font-mono text-xs sm:text-sm whitespace-nowrap transition-all duration-300 ${
           isActive
             ? "bg-green-500/20 text-green-400 border border-green-400/50 shadow-lg shadow-green-400/20"
             : "text-gray-400 hover:text-green-400 hover:bg-green-500/10"
         }`}
       >
         {icon} <span>{label}</span>
-        {isActive && <ChevronRight className="w-4 h-4 animate-pulse" />}
+        {isActive && <ChevronRight className="w-4 h-4 animate-pulse hidden sm:inline-block" />}
       </Link>
     </motion.div>
   );
