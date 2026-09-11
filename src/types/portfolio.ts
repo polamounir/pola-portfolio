@@ -12,6 +12,33 @@ export interface PersonalInfo {
   linkedin: string;
   avatarUrl?: string;
   resumeUrl?: string;
+  headline?: string;
+  yearsOfExperience?: string;
+  linesOfCode?: string;
+  aboutParagraphs?: string[];
+}
+
+export interface FaqItem {
+  _id?: string;
+  id?: string | number;
+  question: string;
+  answer: string;
+  order?: number;
+}
+
+export interface CertificationItem {
+  _id?: string;
+  id?: string | number;
+  name: string;
+  year: string;
+  order?: number;
+}
+
+export interface ToolItem {
+  _id?: string;
+  id?: string | number;
+  name: string;
+  order?: number;
 }
 
 export interface Project {
@@ -92,6 +119,9 @@ export interface HomeSectionProps {
 export interface SkillsSectionProps {
   skills: Skill[];
   PROJECT_DATA: Project[];
+  certifications?: CertificationItem[];
+  tools?: string[];
+  PERSONAL_INFO?: PersonalInfo;
 }
 
 export interface ProjectsSectionProps {

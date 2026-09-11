@@ -29,10 +29,10 @@ const HomeSection: React.FC<HomeSectionProps> = ({
   }, [PROJECT_DATA]);
 
   const stats = [
-    { label: "Years Exp", value: "1+", color: "green" },
+    { label: "Years Exp", value: PERSONAL_INFO.yearsOfExperience || "1+", color: "green" },
     { label: "Projects", value: `${PROJECT_DATA.length}+`, color: "cyan" },
-    { label: "Code Lines", value: "40K+", color: "purple" },
-    { label: "Location", value: "Giza, EGY", color: "blue" },
+    { label: "Code Lines", value: PERSONAL_INFO.linesOfCode || "40K+", color: "purple" },
+    { label: "Location", value: PERSONAL_INFO.location || "Giza, EGY", color: "blue" },
   ];
 
   return (
@@ -62,13 +62,19 @@ const HomeSection: React.FC<HomeSectionProps> = ({
               <span>{PERSONAL_INFO.name} — {PERSONAL_INFO.role}</span>
             </h1>
             <p className="text-base md:text-lg text-gray-300 leading-relaxed max-w-3xl">
-              <strong>Pola Mounir</strong> is a <strong>React Frontend Developer</strong> based in{" "}
-              <strong>Giza, Egypt</strong>, specializing in responsive web applications, component-driven
-              architecture, and high-performance user interfaces using <strong>React.js</strong>,{" "}
-              <strong>TypeScript</strong>, and <strong>Tailwind CSS</strong>.
+              {PERSONAL_INFO.headline ? (
+                <span>{PERSONAL_INFO.headline}</span>
+              ) : (
+                <>
+                  <strong>{PERSONAL_INFO.name}</strong> is a <strong>{PERSONAL_INFO.role}</strong> based in{" "}
+                  <strong>{PERSONAL_INFO.location}</strong>, specializing in responsive web applications, component-driven
+                  architecture, and high-performance user interfaces using <strong>React.js</strong>,{" "}
+                  <strong>TypeScript</strong>, and <strong>Tailwind CSS</strong>.
+                </>
+              )}
             </p>
             <div className="text-gray-400 text-sm pt-2">
-              // 1+ years of frontend experience | {PROJECT_DATA.length}+ production & active projects
+              // {PERSONAL_INFO.yearsOfExperience || "1+"} years of frontend experience | {PROJECT_DATA.length}+ production & active projects
             </div>
             <div className="pt-4 flex flex-wrap gap-3 sm:gap-4">
               <Link

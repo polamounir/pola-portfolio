@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { HelpCircle, FileText } from "lucide-react";
-import type { PersonalInfo, Skill, ExperienceItem, Project } from "../../types";
+import type { PersonalInfo, Skill, ExperienceItem, Project, FaqItem, CertificationItem } from "../../types";
 import { SkillsSection, ExperienceSection } from "../sections";
-import faqData from "../../data/faq.json";
+import defaultFaqData from "../../data/faq.json";
 
 interface AboutPageProps {
   personalInfo: PersonalInfo;
@@ -12,13 +12,20 @@ interface AboutPageProps {
   skills: Skill[];
   experience: ExperienceItem[];
   projects: Project[];
+  faqs?: FaqItem[];
+  certifications?: CertificationItem[];
+  tools?: string[];
 }
 
 const AboutPage: React.FC<AboutPageProps> = ({
   personalInfo,
+  aboutMe,
   skills,
   experience,
   projects,
+  faqs,
+  certifications,
+  tools,
 }) => {
   const location = useLocation();
 
@@ -31,14 +38,17 @@ const AboutPage: React.FC<AboutPageProps> = ({
     }
   }, [location.hash]);
 
+  const activeFaqs = faqs && faqs.length > 0 ? faqs : (defaultFaqData as FaqItem[]);
+
   const canonicalUrl = "https://pola-mounir.vercel.app/about";
   const metaDescription =
-    "Pola Mounir is a React Frontend Developer based in Giza, Egypt, specializing in responsive web applications, component architecture, and modern web technologies.";
+    personalInfo.headline ||
+    `${personalInfo.name} is a ${personalInfo.role} based in ${personalInfo.location}, specializing in responsive web applications, component architecture, and modern web technologies.`;
 
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faqData.map((item) => ({
+    mainEntity: activeFaqs.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {
@@ -70,24 +80,32 @@ const AboutPage: React.FC<AboutPageProps> = ({
         </div>
 
         <h1 className="text-3xl md:text-5xl font-bold text-green-400">
-          About Pola Mounir
+          About {personalInfo.name}
         </h1>
 
         <div className="space-y-4 text-base md:text-lg text-gray-300 leading-relaxed border-l-4 border-green-400/60 pl-4 md:pl-6">
-          <p>
-            <strong>Pola Mounir</strong> is a <strong>React Frontend Developer</strong> based in{" "}
-            <strong>Giza, Egypt</strong>. He specializes in designing and implementing high-performance,
-            responsive web applications utilizing <strong>React.js</strong>, <strong>TypeScript</strong>,{" "}
-            <strong>JavaScript</strong>, and <strong>Tailwind CSS</strong>.
-          </p>
-          <p>
-            With a strong focus on modular component design, state management with Redux Toolkit, and accessible
-            user interfaces, Pola crafts maintainable software tailored for real-world production environments.
-          </p>
-          <p>
-            Explore his work across multiple live projects, including e-commerce platforms, shipment tracking
-            dashboards, medical prediction applications, and educational platforms.
-          </p>
+          {personalInfo.aboutParagraphs && personalInfo.aboutParagraphs.length > 0 ? (
+            personalInfo.aboutParagraphs.map((para, i) => <p key={i}>{para}</p>)
+          ) : aboutMe ? (
+            aboutMe.split("\n\n").map((para, i) => <p key={i}>{para}</p>)
+          ) : (
+            <>
+              <p>
+                <strong>{personalInfo.name}</strong> is a <strong>{personalInfo.role}</strong> based in{" "}
+                <strong>{personalInfo.location}</strong>. He specializes in designing and implementing high-performance,
+                responsive web applications utilizing <strong>React.js</strong>, <strong>TypeScript</strong>,{" "}
+                <strong>JavaScript</strong>, and <strong>Tailwind CSS</strong>.
+              </p>
+              <p>
+                With a strong focus on modular component design, state management with Redux Toolkit, and accessible
+                user interfaces, Pola crafts maintainable software tailored for real-world production environments.
+              </p>
+              <p>
+                Explore his work across multiple live projects, including e-commerce platforms, shipment tracking
+                dashboards, medical prediction applications, and educational platforms.
+              </p>
+            </>
+          )}
         </div>
 
         <div className="flex flex-wrap gap-3 sm:gap-4 pt-4">
@@ -119,7 +137,13 @@ const AboutPage: React.FC<AboutPageProps> = ({
 
       {/* Skills Section Component */}
       <section id="skills">
-        <SkillsSection skills={skills} PROJECT_DATA={projects} />
+        <SkillsSection
+          skills={skills}
+          PROJECT_DATA={projects}
+          certifications={certifications}
+          tools={tools}
+          PERSONAL_INFO={personalInfo}
+        />
       </section>
 
       {/* Experience Section Component */}
@@ -133,9 +157,9 @@ const AboutPage: React.FC<AboutPageProps> = ({
           <HelpCircle className="w-7 h-7" /> Frequently Asked Questions
         </h2>
         <div className="space-y-4">
-          {faqData.map((item, idx) => (
+          {activeFaqs.map((item, idx) => (
             <div
-              key={idx}
+              key={item._id || item.id || idx}
               className="bg-gray-900/80 border border-green-400/20 rounded-xl p-6 space-y-2 hover:border-green-400/40 transition-colors"
             >
               <h3 className="text-lg font-bold text-green-400">{item.question}</h3>

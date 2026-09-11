@@ -17,6 +17,7 @@ import {
   DEFAULT_SKILL_DATA,
   DEFAULT_EXPERIENCE_DATA,
 } from "../constants";
+import defaultFaqs from "../data/faq.json";
 import { portfolioApi, type BackendAlert, type BackendTheme } from "../services/api";
 import type {
   PersonalInfo,
@@ -25,6 +26,8 @@ import type {
   ExperienceItem,
   FormData,
   NavItemData,
+  FaqItem,
+  CertificationItem,
 } from "../types";
 
 export interface UsePortfolioDataReturn {
@@ -36,6 +39,9 @@ export interface UsePortfolioDataReturn {
   navigationLinks: NavItemData[];
   alertConfig: BackendAlert | null;
   themeConfig: BackendTheme | null;
+  faqs: FaqItem[];
+  certifications: CertificationItem[];
+  dailyTools: string[];
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   submissionStatus: "success" | "error" | null;
@@ -94,6 +100,14 @@ const getNavIcon = (name: string) => {
   return <Lightbulb className="w-4 h-4" />;
 };
 
+const DEFAULT_CERTS: CertificationItem[] = [
+  { name: "React.JS internship", year: "2023" },
+  { name: "Frontend using React.JS", year: "2024" },
+  { name: "Backend using Node.JS", year: "2024" },
+];
+
+const DEFAULT_TOOLS = ["VS Code", "Git", "Postman", "Figma", "Terminal"];
+
 // Module-level cache to prevent duplicate fetches (React StrictMode double-mount)
 let _cachedData: {
   timestamp: number;
@@ -111,6 +125,9 @@ async function _fetchAll(signal?: AbortSignal) {
     portfolioApi.getNavigationLinks(signal),
     portfolioApi.getAlert(signal),
     portfolioApi.getTheme(signal),
+    portfolioApi.getFaqs(signal),
+    portfolioApi.getCertifications(signal),
+    portfolioApi.getTools(signal),
   ]);
 }
 
@@ -123,6 +140,9 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
   const [navigationLinks, setNavigationLinks] = useState<NavItemData[]>(DEFAULT_NAV_LINKS);
   const [alertConfig, setAlertConfig] = useState<BackendAlert | null>(null);
   const [themeConfig, setThemeConfig] = useState<BackendTheme | null>(null);
+  const [faqs, setFaqs] = useState<FaqItem[]>(defaultFaqs as FaqItem[]);
+  const [certifications, setCertifications] = useState<CertificationItem[]>(DEFAULT_CERTS);
+  const [dailyTools, setDailyTools] = useState<string[]>(DEFAULT_TOOLS);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [formData, setFormData] = useState<FormData>({
@@ -151,7 +171,18 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
           _cachedData = { timestamp: Date.now(), data: results };
         }
 
-        const [profileRes, projectsRes, skillsRes, expRes, navRes, alertRes, themeRes] = results;
+        const [
+          profileRes,
+          projectsRes,
+          skillsRes,
+          expRes,
+          navRes,
+          alertRes,
+          themeRes,
+          faqsRes,
+          certsRes,
+          toolsRes,
+        ] = results;
 
         if (!isMounted) return;
 
@@ -183,6 +214,10 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
                 linkedin: profileRes.socialLinks?.linkedin || prev.linkedin,
                 avatarUrl: profileRes.avatarUrl || prev.avatarUrl,
                 resumeUrl: normalizedResumeUrl || prev.resumeUrl || "/Pola_Mounir_Resume.pdf",
+                headline: profileRes.headline || prev.headline,
+                yearsOfExperience: profileRes.yearsOfExperience || prev.yearsOfExperience || "1+",
+                linesOfCode: profileRes.linesOfCode || prev.linesOfCode || "40K+",
+                aboutParagraphs: profileRes.aboutParagraphs || prev.aboutParagraphs,
               };
             });
             if (profileRes.detailedBio) {
@@ -248,9 +283,9 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
                 image: bp.iconEmoji || bp.image || "💻",
                 status: (bp.status as "Production" | "Beta" | "Active Dev") || "Production",
                 imgSrc: thumb,
-                fullDescription: bp.description,
-                datePublished: (bp as any).datePublished || defaultProj?.datePublished,
-                dateModified: (bp as any).dateModified || defaultProj?.dateModified,
+                fullDescription: bp.fullDescription || bp.description,
+                datePublished: bp.datePublished || (bp as any).datePublished || defaultProj?.datePublished,
+                dateModified: bp.dateModified || (bp as any).dateModified || defaultProj?.dateModified,
               };
             });
             setProjects(mappedProjects);
@@ -319,6 +354,35 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
             }
             setNavigationLinks(mappedNav);
           }
+
+          // 6. FAQs sync
+          if (faqsRes && faqsRes.length > 0) {
+            setFaqs(
+              faqsRes.map((f, idx) => ({
+                id: f._id || idx,
+                question: f.question,
+                answer: f.answer,
+                order: f.order ?? idx,
+              }))
+            );
+          }
+
+          // 7. Certifications sync
+          if (certsRes && certsRes.length > 0) {
+            setCertifications(
+              certsRes.map((c, idx) => ({
+                id: c._id || idx,
+                name: c.name,
+                year: c.year,
+                order: c.order ?? idx,
+              }))
+            );
+          }
+
+          // 8. Daily tools sync
+          if (toolsRes && toolsRes.length > 0) {
+            setDailyTools(toolsRes.map((t) => t.name));
+          }
         });
       } catch (err) {
         console.warn("Error fetching portfolio live data, using fallbacks:", err);
@@ -368,6 +432,9 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
     navigationLinks,
     alertConfig,
     themeConfig,
+    faqs,
+    certifications,
+    dailyTools,
     formData,
     setFormData,
     submissionStatus,

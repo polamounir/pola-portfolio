@@ -23,27 +23,34 @@ const listItemVariants = {
 const SkillsSection: React.FC<SkillsSectionProps> = ({
   skills,
   PROJECT_DATA,
+  certifications,
+  tools: propTools,
+  PERSONAL_INFO,
 }) => {
   const dynamicCategories = Array.from(new Set(skills.map((s) => s.category?.trim()))).filter(Boolean);
   const skillCategories = dynamicCategories.length > 0 ? dynamicCategories : ["Frontend", "Backend/DB", "Soft Skills"];
-  const certs = [
+
+  const defaultCerts = [
     { name: "React.JS internship", year: "2023" },
     { name: "Frontend using React.JS", year: "2024" },
     { name: "Backend using Node.JS", year: "2024" },
   ];
-  const tools = [
+  const certs = certifications && certifications.length > 0 ? certifications : defaultCerts;
+
+  const defaultTools = [
     "VS Code",
     "Git",
     "Postman",
     "Figma",
     "Terminal",
-
   ];
+  const tools = propTools && propTools.length > 0 ? propTools : defaultTools;
+
   const stats = [
-    { label: "Years Exp", value: "1+", icon: <Code className="w-6 h-6" /> },
+    { label: "Years Exp", value: PERSONAL_INFO?.yearsOfExperience || "1+", icon: <Code className="w-6 h-6" /> },
     {
       label: "Technologies",
-      value: "10+",
+      value: `${skills.length}+`,
       icon: <Terminal className="w-6 h-6" />,
     },
     {

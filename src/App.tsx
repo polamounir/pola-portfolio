@@ -43,6 +43,9 @@ const App: React.FC = () => {
     navigationLinks,
     alertConfig,
     themeConfig,
+    faqs,
+    certifications,
+    dailyTools,
     formData,
     setFormData,
     submissionStatus,
@@ -191,6 +194,9 @@ const App: React.FC = () => {
                       skills={skills}
                       experience={experience}
                       projects={projects}
+                      faqs={faqs}
+                      certifications={certifications}
+                      tools={dailyTools}
                     />
                   }
                 />

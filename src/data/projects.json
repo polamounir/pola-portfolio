@@ -87,5 +87,50 @@
     "datePublished": "2023-11-10",
     "dateModified": "2024-10-05",
     "imgKey": "p51"
+  },
+  {
+    "id": 5,
+    "slug": "khelzam-exam-management-system",
+    "title": "Khelzam Exam Management System",
+    "description": "Comprehensive exam platform with 3 standalone components (Student App, Admin Dashboard, REST API), real-time tab-switch integrity tracking, and device fingerprinting.",
+    "tech": [
+      "React 19",
+      "Node.js",
+      "MongoDB",
+      "Express.js",
+      "JWT",
+      "Tailwind CSS"
+    ],
+    "github": "https://github.com/polamounir",
+    "live": "",
+    "lines": "10,000+",
+    "image": "📝",
+    "status": "Production",
+    "datePublished": "2025-01-10",
+    "dateModified": "2026-02-15",
+    "imgKey": "p41"
+  },
+  {
+    "id": 6,
+    "slug": "3arfny",
+    "title": "3arfny",
+    "description": "Full-stack anonymous messaging platform built with Next.js 16, React 19, and Supabase with custom OTP authentication, cursor pagination, and Arabic RTL PWA.",
+    "tech": [
+      "Next.js 16",
+      "React 19",
+      "Supabase",
+      "Tailwind CSS v4",
+      "Framer Motion",
+      "Serwist PWA",
+      "TypeScript"
+    ],
+    "github": "https://github.com/polamounir",
+    "live": "",
+    "lines": "14,000+",
+    "image": "💬",
+    "status": "Production",
+    "datePublished": "2025-03-01",
+    "dateModified": "2026-03-10",
+    "imgKey": "p21"
   }
 ]

@@ -8,6 +8,10 @@ export interface BackendProfile {
   bio?: string;
   shortBio?: string;
   detailedBio?: string;
+  headline?: string;
+  yearsOfExperience?: string;
+  linesOfCode?: string;
+  aboutParagraphs?: string[];
   avatarUrl?: string;
   resumeUrl?: string;
   contact?: {
@@ -27,6 +31,10 @@ export interface BackendProject {
   _id: string;
   title: string;
   description: string;
+  fullDescription?: string;
+  slug?: string;
+  datePublished?: string;
+  dateModified?: string;
   technologies: string[];
   links?:
     | {
@@ -115,6 +123,26 @@ export interface BackendTheme {
   fontType?: string;
 }
 
+export interface BackendFaq {
+  _id?: string;
+  question: string;
+  answer: string;
+  order?: number;
+}
+
+export interface BackendCertification {
+  _id?: string;
+  name: string;
+  year: string;
+  order?: number;
+}
+
+export interface BackendTool {
+  _id?: string;
+  name: string;
+  order?: number;
+}
+
 // Shared fetch helper with AbortSignal support
 async function apiFetch<T>(url: string, signal?: AbortSignal): Promise<T | null> {
   try {
@@ -137,6 +165,9 @@ export const portfolioApi = {
   getSkills: (signal?: AbortSignal) => apiFetch<BackendSkill[]>(`${API_BASE}/skills`, signal),
   getExperiences: (signal?: AbortSignal) => apiFetch<BackendExperience[]>(`${API_BASE}/experiences`, signal),
   getNavigationLinks: (signal?: AbortSignal) => apiFetch<BackendNavLink[]>(`${API_BASE}/navigation-links`, signal),
+  getFaqs: (signal?: AbortSignal) => apiFetch<BackendFaq[]>(`${API_BASE}/faqs`, signal),
+  getCertifications: (signal?: AbortSignal) => apiFetch<BackendCertification[]>(`${API_BASE}/certifications`, signal),
+  getTools: (signal?: AbortSignal) => apiFetch<BackendTool[]>(`${API_BASE}/tools`, signal),
 
   async sendMessage(data: { name: string; email: string; message: string }): Promise<{ success: boolean; message?: string }> {
     try {
