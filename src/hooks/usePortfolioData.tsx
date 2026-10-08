@@ -117,48 +117,9 @@ let _cachedData: {
 const CACHE_TTL = 5000; // 5 seconds
 
 async function _fetchInitData(signal?: AbortSignal): Promise<BackendInitData | null> {
-  // Primary attempt: Single unified /init endpoint (1 network request)
-  const init = await portfolioApi.getInit(signal);
-  if (init) return init;
-
-  // Fallback: Individual endpoints if /init is unreachable or legacy server
+  // Single unified /init endpoint (1 network request, zero waterfalls)
   try {
-    const [
-      profile,
-      projects,
-      skills,
-      experiences,
-      navigationLinks,
-      alert,
-      theme,
-      faqs,
-      certifications,
-      tools,
-    ] = await Promise.all([
-      portfolioApi.getProfile(signal),
-      portfolioApi.getProjects(signal),
-      portfolioApi.getSkills(signal),
-      portfolioApi.getExperiences(signal),
-      portfolioApi.getNavigationLinks(signal),
-      portfolioApi.getAlert(signal),
-      portfolioApi.getTheme(signal),
-      portfolioApi.getFaqs(signal),
-      portfolioApi.getCertifications(signal),
-      portfolioApi.getTools(signal),
-    ]);
-
-    return {
-      profile: profile || {},
-      projects: projects || [],
-      skills: skills || [],
-      experiences: experiences || [],
-      navigationLinks: navigationLinks || [],
-      alert,
-      theme,
-      faqs: faqs || [],
-      certifications: certifications || [],
-      tools: tools || [],
-    };
+    return await portfolioApi.getInit(signal);
   } catch {
     return null;
   }
@@ -426,11 +387,27 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
       }
     };
 
-    loadData();
+    // Defer network sync to idle time so it NEVER blocks initial paint or critical path
+    const idleId =
+      typeof window !== "undefined" && "requestIdleCallback" in window
+        ? (window as unknown as { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(
+            () => {
+              if (isMounted) loadData();
+            },
+            { timeout: 1500 }
+          )
+        : setTimeout(() => {
+            if (isMounted) loadData();
+          }, 300);
 
     return () => {
       isMounted = false;
       controller.abort();
+      if (typeof window !== "undefined" && "cancelIdleCallback" in window && typeof idleId === "number") {
+        (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(idleId);
+      } else {
+        clearTimeout(idleId as unknown as number);
+      }
     };
   }, []);
 

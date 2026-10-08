@@ -4,15 +4,34 @@ export const CursorGlow: React.FC = () => {
   const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = glowRef.current;
-    if (!el) return;
+    let handleMouseMove: ((e: MouseEvent) => void) | null = null;
+    let rafId: number | null = null;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      el.style.transform = `translate3d(${e.clientX - 192}px, ${e.clientY - 192}px, 0)`;
+    const attach = () => {
+      const el = glowRef.current;
+      if (!el) return;
+
+      handleMouseMove = (e: MouseEvent) => {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          if (el) {
+            el.style.transform = `translate3d(${e.clientX - 192}px, ${e.clientY - 192}px, 0)`;
+          }
+        });
+      };
+
+      window.addEventListener("mousemove", handleMouseMove, { passive: true });
     };
 
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    const timer = setTimeout(attach, 200);
+
+    return () => {
+      clearTimeout(timer);
+      if (rafId) cancelAnimationFrame(rafId);
+      if (handleMouseMove) {
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
+    };
   }, []);
 
   return (

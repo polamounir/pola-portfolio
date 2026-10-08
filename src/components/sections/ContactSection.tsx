@@ -33,9 +33,9 @@ const ContactSection: React.FC<ContactSectionProps> = ({
     <div className="grid md:grid-cols-2 gap-8">
       <div className="space-y-6">
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
+          initial={false}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ ...pageTransition, delay: 0.1 }}
+          transition={pageTransition}
           className="bg-gray-900 rounded-lg border border-green-400/30 p-8"
         >
           <h3 className="text-xl font-bold text-green-400 mb-4">
@@ -111,9 +111,9 @@ const ContactSection: React.FC<ContactSectionProps> = ({
       </div>
 
       <motion.div
-        initial={{ opacity: 0, x: 30 }}
+        initial={false}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ ...pageTransition, delay: 0.2 }}
+        transition={pageTransition}
         className="bg-gray-900 rounded-lg border border-green-400/30 p-8"
       >
         <h3 className="text-xl font-bold text-green-400 mb-6">Send Message</h3>
