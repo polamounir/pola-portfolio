@@ -150,6 +150,26 @@ assert(fs.existsSync(path.join(distDir, 'favicon.ico')), 'dist/favicon.ico exist
 assert(fs.existsSync(path.join(distDir, 'favicon-32x32.png')), 'dist/favicon-32x32.png exists');
 assert(fs.existsSync(path.join(distDir, 'apple-touch-icon.png')), 'dist/apple-touch-icon.png exists');
 
+// 10. Verify Canonical Links: exactly one canonical tag per page and correct URL matching
+const routesToCheck = [
+  { path: 'index.html', expected: 'https://pola-mounir.vercel.app/' },
+  { path: 'contact/index.html', expected: 'https://pola-mounir.vercel.app/contact' },
+  { path: 'about/index.html', expected: 'https://pola-mounir.vercel.app/about' },
+  { path: 'projects/index.html', expected: 'https://pola-mounir.vercel.app/projects' },
+];
+
+for (const rc of routesToCheck) {
+  const fullPath = path.join(distDir, rc.path);
+  if (fs.existsSync(fullPath)) {
+    const content = fs.readFileSync(fullPath, 'utf-8');
+    const canonicalMatches = content.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']*)["'][^>]*\/?>/gi) || [];
+    assert(canonicalMatches.length === 1, `Exactly ONE canonical link in ${rc.path} (found ${canonicalMatches.length})`);
+    if (canonicalMatches.length > 0) {
+      assert(canonicalMatches[0].includes(rc.expected), `Canonical in ${rc.path} points to ${rc.expected}`);
+    }
+  }
+}
+
 console.log('\n----------------------------------------------------');
 if (failed) {
   console.error('❌ SOME VERIFICATIONS FAILED');

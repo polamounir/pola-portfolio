@@ -16,7 +16,9 @@ export default defineConfig(({ isSsrBuild }) => ({
         : {
             manualChunks: {
               'vendor-react': ['react', 'react-dom'],
+              'vendor-router': ['react-router-dom', 'react-router'],
               'vendor-motion': ['framer-motion'],
+              'vendor-helmet': ['react-helmet-async'],
             },
           },
     },

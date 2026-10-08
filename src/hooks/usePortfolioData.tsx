@@ -176,8 +176,7 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
   const [faqs, setFaqs] = useState<FaqItem[]>(defaultFaqs as FaqItem[]);
   const [certifications, setCertifications] = useState<CertificationItem[]>(DEFAULT_CERTS);
   const [dailyTools, setDailyTools] = useState<string[]>(DEFAULT_TOOLS);
-  const isServer = typeof window === "undefined";
-  const [isLoading, setIsLoading] = useState<boolean>(!isServer);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<FormData>({
     name: "",

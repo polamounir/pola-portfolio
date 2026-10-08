@@ -156,14 +156,24 @@ export interface BackendInitData {
   tools: BackendTool[];
 }
 
-// Shared fetch helper with AbortSignal support
+// Shared fetch helper with AbortSignal support and fallback timeout
 async function apiFetch<T>(url: string, signal?: AbortSignal): Promise<T | null> {
+  const timeoutController = new AbortController();
+  const timer = setTimeout(() => timeoutController.abort(), 4000);
+
+  // Combine external abort signal if provided
+  if (signal) {
+    signal.addEventListener("abort", () => timeoutController.abort(), { once: true });
+  }
+
   try {
-    const res = await fetch(url, { signal });
+    const res = await fetch(url, { signal: timeoutController.signal });
+    clearTimeout(timer);
     if (!res.ok) return null;
     const json = await res.json();
     return json.data || null;
   } catch (err: unknown) {
+    clearTimeout(timer);
     if (err instanceof DOMException && err.name === 'AbortError') return null;
     console.warn(`Portfolio API - fetch ${url} fallback:`, err);
     return null;

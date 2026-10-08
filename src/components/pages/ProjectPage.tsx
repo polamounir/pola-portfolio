@@ -180,6 +180,8 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ projects, personalInfo, isLoa
             alt={`Screenshot of ${project.title} application built with ${project.tech.join(", ")} by Pola Mounir`}
             width={1200}
             height={630}
+            fetchPriority="high"
+            loading="eager"
             decoding="async"
             className="w-full h-full object-cover object-center"
           />

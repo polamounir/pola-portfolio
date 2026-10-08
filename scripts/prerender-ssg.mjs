@@ -60,6 +60,12 @@ async function runSSG() {
       finalHtml = finalHtml.replace(/<meta[^>]*name=["']description["'][^>]*content=["'][^"']*["'][^>]*\/?>/i, descMatch[0]);
     }
 
+    // 2b. Extract and replace robots meta tag if specified (e.g., 404 noindex)
+    const robotsMatch = headTags.match(/<meta[^>]*name=["']robots["'][^>]*content=["']([^"']*)["'][^>]*\/?>/i);
+    if (robotsMatch) {
+      finalHtml = finalHtml.replace(/<meta[^>]*name=["']robots["'][^>]*content=["'][^"']*["'][^>]*\/?>/i, robotsMatch[0]);
+    }
+
     // 3. Extract and replace og:title, og:description, og:url
     const ogTitleMatch = headTags.match(/<meta[^>]*property=["']og:title["'][^>]*content=["']([^"']*)["'][^>]*\/?>/i);
     if (ogTitleMatch) {
@@ -76,14 +82,18 @@ async function runSSG() {
       finalHtml = finalHtml.replace(/<meta[^>]*property=["']og:url["'][^>]*content=["'][^"']*["'][^>]*\/?>/i, ogUrlMatch[0]);
     }
 
-    // 4. Extract and replace canonical link
+    // 4. Extract and inject exactly one canonical link
+    // Remove any pre-existing canonical link tags to guarantee zero duplicate/conflicting canonical URLs
+    finalHtml = finalHtml.replace(/<link[^>]*rel=["']canonical["'][^>]*\/?>/gi, '');
+
     const canonicalMatch = headTags.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']*)["'][^>]*\/?>/i);
     if (canonicalMatch) {
-      if (finalHtml.includes('rel="canonical"')) {
-        finalHtml = finalHtml.replace(/<link[^>]*rel=["']canonical["'][^>]*href=["'][^"']*["'][^>]*\/?>/i, canonicalMatch[0]);
-      } else {
-        finalHtml = finalHtml.replace('</head>', `  ${canonicalMatch[0]}\n</head>`);
+      let canonicalTag = canonicalMatch[0];
+      // Attach data-rh="true" so client react-helmet-async claims and reconciles this tag without creating duplicates
+      if (!canonicalTag.includes('data-rh="true"')) {
+        canonicalTag = canonicalTag.replace('<link', '<link data-rh="true"');
       }
+      finalHtml = finalHtml.replace('</head>', `    ${canonicalTag}\n  </head>`);
     }
 
     // 5. Extract JSON-LD scripts if any
@@ -96,21 +106,32 @@ async function runSSG() {
     // 6. Inject pre-rendered body into #root
     finalHtml = finalHtml.replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);
 
-    // 7. Write pre-rendered file to disk
-    let outFile;
+    // 7. Write pre-rendered files to disk
     if (route === '/') {
-      outFile = path.join(distDir, 'index.html');
+      const outFile = path.join(distDir, 'index.html');
+      fs.writeFileSync(outFile, finalHtml, 'utf-8');
+      prerenderCount++;
+      console.log(`✓ SSG Prerendered ${route} -> ${path.relative(rootDir, outFile)} (${Math.round(finalHtml.length / 1024)} kB)`);
     } else if (route === '/404') {
-      outFile = path.join(distDir, '404.html');
+      const outFile = path.join(distDir, '404.html');
+      fs.writeFileSync(outFile, finalHtml, 'utf-8');
+      prerenderCount++;
+      console.log(`✓ SSG Prerendered ${route} -> ${path.relative(rootDir, outFile)} (${Math.round(finalHtml.length / 1024)} kB)`);
     } else {
-      const routeDir = path.join(distDir, route.replace(/^\//, ''));
+      const cleanRoute = route.replace(/^\//, '');
+      const routeDir = path.join(distDir, cleanRoute);
       fs.mkdirSync(routeDir, { recursive: true });
-      outFile = path.join(routeDir, 'index.html');
-    }
+      const dirIndexFile = path.join(routeDir, 'index.html');
+      fs.writeFileSync(dirIndexFile, finalHtml, 'utf-8');
 
-    fs.writeFileSync(outFile, finalHtml, 'utf-8');
-    prerenderCount++;
-    console.log(`✓ SSG Prerendered ${route} -> ${path.relative(rootDir, outFile)} (${Math.round(finalHtml.length / 1024)} kB)`);
+      // Also generate clean route file (e.g. dist/contact.html) for hosting platforms with cleanUrls
+      const flatHtmlFile = path.join(distDir, `${cleanRoute}.html`);
+      fs.mkdirSync(path.dirname(flatHtmlFile), { recursive: true });
+      fs.writeFileSync(flatHtmlFile, finalHtml, 'utf-8');
+
+      prerenderCount++;
+      console.log(`✓ SSG Prerendered ${route} -> ${path.relative(rootDir, dirIndexFile)} (${Math.round(finalHtml.length / 1024)} kB)`);
+    }
   }
 
   // Clean up server build directory

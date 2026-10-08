@@ -23,11 +23,11 @@ import {
   ContactSkeleton,
 } from "./components/skeletons";
 
-// Framer Motion Page Transition Variants
+// Framer Motion Page Transition Variants (Lightweight, hardware-accelerated transforms)
 const pageVariants = {
-  initial: { opacity: 0, y: 10, filter: "blur(5px)" },
-  in: { opacity: 1, y: 0, filter: "blur(0px)" },
-  out: { opacity: 0, y: -10, filter: "blur(5px)" },
+  initial: { opacity: 0, y: 8 },
+  in: { opacity: 1, y: 0 },
+  out: { opacity: 0, y: -8 },
 };
 
 const pageTransition: Transition = {
@@ -38,6 +38,11 @@ const pageTransition: Transition = {
 
 const App: React.FC = () => {
   const location = useLocation();
+  const isFirstMountRef = React.useRef(true);
+
+  React.useEffect(() => {
+    isFirstMountRef.current = false;
+  }, []);
 
   // Custom interaction hooks
   const terminalText = useTypewriter("Hello", 150);
@@ -166,7 +171,7 @@ const App: React.FC = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
-            initial="initial"
+            initial={isFirstMountRef.current ? false : "initial"}
             animate="in"
             exit="out"
             variants={pageVariants}

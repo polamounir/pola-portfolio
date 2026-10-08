@@ -38,9 +38,9 @@ const HomeSection: React.FC<HomeSectionProps> = ({
   return (
     <div className="space-y-12 font-mono">
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ ...pageTransition, delay: 0.1 }}
+        transition={pageTransition}
         className="bg-gray-900 rounded-lg border border-green-400/30 shadow-2xl shadow-green-400/10 overflow-hidden"
         style={{ minHeight: "220px" }}
       >

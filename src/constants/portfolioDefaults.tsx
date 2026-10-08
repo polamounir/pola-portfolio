@@ -1,9 +1,9 @@
 import { Code, Cpu, Database } from "lucide-react";
-import project1 from "../assets/projects/p11.png";
-import project2 from "../assets/projects/p21.png";
-import project3 from "../assets/projects/p31.png";
-import project4 from "../assets/projects/p41.png";
-import project5 from "../assets/projects/p51.png";
+import project1 from "../assets/projects/p11.webp";
+import project2 from "../assets/projects/p21.webp";
+import project3 from "../assets/projects/p31.webp";
+import project4 from "../assets/projects/p41.webp";
+import project5 from "../assets/projects/p51.webp";
 import type { PersonalInfo, Project, Skill, ExperienceItem } from "../types";
 
 export const DEFAULT_PERSONAL_INFO: PersonalInfo = {

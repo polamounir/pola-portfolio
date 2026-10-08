@@ -33,7 +33,10 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
 
 export const SEO: React.FC<SEOProps> = ({ title, description, canonical }) => {
   const location = useLocation();
-  const cleanPath = location.pathname.replace(/\/index\.html$/, "") || "/";
+  const rawPath = location.pathname.replace(/\/index\.html$/, "");
+  const cleanPath = (rawPath.length > 1 && rawPath.endsWith("/"))
+    ? rawPath.slice(0, -1)
+    : (rawPath || "/");
 
   // Delegate /about and project detail pages to their own dedicated page helmets
   if (cleanPath === "/about" || (cleanPath.startsWith("/projects/") && cleanPath !== "/projects")) {
