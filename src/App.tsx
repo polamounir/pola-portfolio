@@ -6,8 +6,10 @@ import { BackgroundGrid, CursorGlow } from "./components/ui";
 import { MaintenanceBanner } from "./components/popups";
 import { useTypewriter, usePortfolioData } from "./hooks";
 
-// --- Route-Driven Feature Modules (Client-side Lazy Loaded) ---
-const LazyHomeSection = React.lazy(() => import("./components/sections/HomeSection"));
+// --- Core Landing Module (Instant Render on App Open) ---
+import HomeSection from "./components/sections/HomeSection";
+
+// --- Route-Driven Feature Modules (Lazy Loaded on Navigation) ---
 const LazyProjectsSection = React.lazy(() => import("./components/sections/ProjectsSection"));
 const LazyContactSection = React.lazy(() => import("./components/sections/ContactSection"));
 const LazyAboutPage = React.lazy(() => import("./components/pages/AboutPage"));
@@ -50,7 +52,7 @@ const pageTransition: Transition = {
 };
 
 const App: React.FC<AppProps> = ({ components }) => {
-  const Home = components?.HomeSection || LazyHomeSection;
+  const Home = components?.HomeSection || HomeSection;
   const Projects = components?.ProjectsSection || LazyProjectsSection;
   const Contact = components?.ContactSection || LazyContactSection;
   const About = components?.AboutPage || LazyAboutPage;
@@ -188,29 +190,29 @@ const App: React.FC<AppProps> = ({ components }) => {
 
       {/* Main Content Transition Container */}
       <main id="main-content" className="relative z-10 max-w-7xl mx-auto px-6 py-12 min-h-[75dvh]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={isFirstMountRef.current ? false : "initial"}
-            animate="in"
-            exit="out"
-            variants={pageVariants}
-            transition={pageTransition}
-          >
-            <Suspense
-              fallback={
-                location.pathname === "/about" || location.pathname === "/skills" || location.pathname === "/experience" ? (
-                  <AboutSkeleton />
-                ) : location.pathname === "/projects" ? (
-                  <ProjectsSkeleton />
-                ) : location.pathname.startsWith("/projects/") ? (
-                  <ProjectDetailSkeleton />
-                ) : location.pathname === "/contact" ? (
-                  <ContactSkeleton />
-                ) : (
-                  <HomeSkeleton />
-                )
-              }
+        <Suspense
+          fallback={
+            location.pathname === "/about" || location.pathname === "/skills" || location.pathname === "/experience" ? (
+              <AboutSkeleton />
+            ) : location.pathname === "/projects" ? (
+              <ProjectsSkeleton />
+            ) : location.pathname.startsWith("/projects/") ? (
+              <ProjectDetailSkeleton />
+            ) : location.pathname === "/contact" ? (
+              <ContactSkeleton />
+            ) : (
+              <HomeSkeleton />
+            )
+          }
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial="initial"
+              animate="in"
+              exit="out"
+              variants={pageVariants}
+              transition={pageTransition}
             >
               <Routes location={location}>
                 <Route
@@ -297,9 +299,9 @@ const App: React.FC<AppProps> = ({ components }) => {
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </Suspense>
-          </motion.div>
-        </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
+        </Suspense>
       </main>
 
       {/* Clean Shared Footer */}

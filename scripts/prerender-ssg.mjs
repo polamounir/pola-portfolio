@@ -103,8 +103,9 @@ async function runSSG() {
       finalHtml = finalHtml.replace('</head>', `  ${jsonLdBlock}\n</head>`);
     }
 
-    // 6. Inject pre-rendered body into #root
-    finalHtml = finalHtml.replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);
+    // 6. Inject pre-rendered body into #root and clean up initial-loader
+    finalHtml = finalHtml.replace(/<div\s+id="initial-loader"[\s\S]*?<\/style>\s*<\/div>/i, '');
+    finalHtml = finalHtml.replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${bodyHtml}</div>`);
 
     // 7. Write pre-rendered files to disk
     if (route === '/') {

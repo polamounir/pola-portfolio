@@ -16,9 +16,20 @@ const app = (
   </StrictMode>
 );
 
+const dismissInitialLoader = () => {
+  const loader = document.getElementById('initial-loader');
+  if (loader) {
+    loader.style.opacity = '0';
+    loader.style.pointerEvents = 'none';
+    setTimeout(() => loader.remove(), 350);
+  }
+};
+
 if (container.hasChildNodes()) {
   hydrateRoot(container, app);
+  dismissInitialLoader();
 } else {
   createRoot(container).render(app);
+  dismissInitialLoader();
 }
 
