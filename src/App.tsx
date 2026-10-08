@@ -2,14 +2,12 @@ import React, { Suspense } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, type Transition } from "framer-motion";
 import { Header, Footer, SEO } from "./components/common";
-import { BackgroundGrid, CursorGlow } from "./components/ui";
+import { BackgroundGrid, CursorGlow, SuspenseLoader } from "./components/ui";
 import { MaintenanceBanner } from "./components/popups";
 import { useTypewriter, usePortfolioData } from "./hooks";
 
-// --- Core Landing Module (Instant Render on App Open) ---
-import HomeSection from "./components/sections/HomeSection";
-
-// --- Route-Driven Feature Modules (Lazy Loaded on Navigation) ---
+// --- Route-Driven Feature Modules (Lazy Loaded on App Open & Navigation) ---
+const LazyHomeSection = React.lazy(() => import("./components/sections/HomeSection"));
 const LazyProjectsSection = React.lazy(() => import("./components/sections/ProjectsSection"));
 const LazyContactSection = React.lazy(() => import("./components/sections/ContactSection"));
 const LazyAboutPage = React.lazy(() => import("./components/pages/AboutPage"));
@@ -32,9 +30,6 @@ export interface AppProps {
 // --- Route Skeletons for Fluid UX Loading ---
 import {
   HomeSkeleton,
-  ProjectsSkeleton,
-  AboutSkeleton,
-  ProjectDetailSkeleton,
   ContactSkeleton,
 } from "./components/skeletons";
 
@@ -52,7 +47,7 @@ const pageTransition: Transition = {
 };
 
 const App: React.FC<AppProps> = ({ components }) => {
-  const Home = components?.HomeSection || HomeSection;
+  const Home = components?.HomeSection || LazyHomeSection;
   const Projects = components?.ProjectsSection || LazyProjectsSection;
   const Contact = components?.ContactSection || LazyContactSection;
   const About = components?.AboutPage || LazyAboutPage;
@@ -190,21 +185,7 @@ const App: React.FC<AppProps> = ({ components }) => {
 
       {/* Main Content Transition Container */}
       <main id="main-content" className="relative z-10 max-w-7xl mx-auto px-6 py-12 min-h-[75dvh]">
-        <Suspense
-          fallback={
-            location.pathname === "/about" || location.pathname === "/skills" || location.pathname === "/experience" ? (
-              <AboutSkeleton />
-            ) : location.pathname === "/projects" ? (
-              <ProjectsSkeleton />
-            ) : location.pathname.startsWith("/projects/") ? (
-              <ProjectDetailSkeleton />
-            ) : location.pathname === "/contact" ? (
-              <ContactSkeleton />
-            ) : (
-              <HomeSkeleton />
-            )
-          }
-        >
+        <Suspense fallback={<SuspenseLoader />}>
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
