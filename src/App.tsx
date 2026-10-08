@@ -54,16 +54,8 @@ const App: React.FC<AppProps> = ({ components }) => {
   const location = useLocation();
   const isFirstMountRef = React.useRef(true);
 
-  // 2-second App Opening Intro Loader
-  const isServer = typeof window === "undefined";
-  const [showAppLoader, setShowAppLoader] = React.useState(!isServer);
-
   React.useEffect(() => {
     isFirstMountRef.current = false;
-    const timer = setTimeout(() => {
-      setShowAppLoader(false);
-    }, 2000);
-    return () => clearTimeout(timer);
   }, []);
 
   // Custom interaction hooks
@@ -88,61 +80,65 @@ const App: React.FC<AppProps> = ({ components }) => {
     handleSubmit,
   } = usePortfolioData();
 
-  // Dynamically apply custom theme colors and typography
+  // Dynamically apply custom theme colors and typography (scheduled via rAF to prevent forced reflow)
   React.useEffect(() => {
     if (!themeConfig) return;
 
-    const root = document.documentElement;
-    if (themeConfig.primaryColor) {
-      root.style.setProperty("--app-primary", themeConfig.primaryColor);
-    }
-    if (themeConfig.primaryDarkColor) {
-      root.style.setProperty("--app-primary-dark", themeConfig.primaryDarkColor);
-    }
-    if (themeConfig.secondaryColor) {
-      root.style.setProperty("--app-secondary", themeConfig.secondaryColor);
-    }
-    if (themeConfig.secondaryDarkColor) {
-      root.style.setProperty("--app-secondary-dark", themeConfig.secondaryDarkColor);
-    }
-    if (themeConfig.backgroundColor) {
-      root.style.setProperty("--app-bg", themeConfig.backgroundColor);
-    }
-    if (themeConfig.cardBackgroundColor) {
-      root.style.setProperty("--app-card-bg", themeConfig.cardBackgroundColor);
-    }
-    if (themeConfig.cardSubColor) {
-      root.style.setProperty("--app-card-sub", themeConfig.cardSubColor);
-    }
-    if (themeConfig.glowColor) {
-      root.style.setProperty("--app-glow", themeConfig.glowColor);
-    }
-    if (themeConfig.fontFamily) {
-      root.style.setProperty("--app-font", themeConfig.fontFamily);
+    const rafId = requestAnimationFrame(() => {
+      const root = document.documentElement;
+      if (themeConfig.primaryColor) {
+        root.style.setProperty("--app-primary", themeConfig.primaryColor);
+      }
+      if (themeConfig.primaryDarkColor) {
+        root.style.setProperty("--app-primary-dark", themeConfig.primaryDarkColor);
+      }
+      if (themeConfig.secondaryColor) {
+        root.style.setProperty("--app-secondary", themeConfig.secondaryColor);
+      }
+      if (themeConfig.secondaryDarkColor) {
+        root.style.setProperty("--app-secondary-dark", themeConfig.secondaryDarkColor);
+      }
+      if (themeConfig.backgroundColor) {
+        root.style.setProperty("--app-bg", themeConfig.backgroundColor);
+      }
+      if (themeConfig.cardBackgroundColor) {
+        root.style.setProperty("--app-card-bg", themeConfig.cardBackgroundColor);
+      }
+      if (themeConfig.cardSubColor) {
+        root.style.setProperty("--app-card-sub", themeConfig.cardSubColor);
+      }
+      if (themeConfig.glowColor) {
+        root.style.setProperty("--app-glow", themeConfig.glowColor);
+      }
+      if (themeConfig.fontFamily) {
+        root.style.setProperty("--app-font", themeConfig.fontFamily);
 
-      const rawFontName = themeConfig.fontFamily.split(",")[0].replace(/['"]/g, "").trim();
-      if (rawFontName === "JetBrains Mono") return;
+        const rawFontName = themeConfig.fontFamily.split(",")[0].replace(/['"]/g, "").trim();
+        if (rawFontName === "JetBrains Mono") return;
 
-      const FONT_URLS: Record<string, string> = {
-        "Fira Code": "https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap",
-        "Inter": "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-        "Space Grotesk": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
-        "Poppins": "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
-        "Outfit": "https://fonts.googleapis.com/css2?family=Outfit:wght@300..900&display=swap",
-        "Playfair Display": "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap",
-      };
+        const FONT_URLS: Record<string, string> = {
+          "Fira Code": "https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap",
+          "Inter": "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+          "Space Grotesk": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
+          "Poppins": "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
+          "Outfit": "https://fonts.googleapis.com/css2?family=Outfit:wght@300..900&display=swap",
+          "Playfair Display": "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap",
+        };
 
-      if (FONT_URLS[rawFontName]) {
-        const fontId = `google-font-${rawFontName.toLowerCase().replace(/\s+/g, "-")}`;
-        if (!document.getElementById(fontId)) {
-          const link = document.createElement("link");
-          link.id = fontId;
-          link.rel = "stylesheet";
-          link.href = FONT_URLS[rawFontName];
-          document.head.appendChild(link);
+        if (FONT_URLS[rawFontName]) {
+          const fontId = `google-font-${rawFontName.toLowerCase().replace(/\s+/g, "-")}`;
+          if (!document.getElementById(fontId)) {
+            const link = document.createElement("link");
+            link.id = fontId;
+            link.rel = "stylesheet";
+            link.href = FONT_URLS[rawFontName];
+            document.head.appendChild(link);
+          }
         }
       }
-    }
+    });
+
+    return () => cancelAnimationFrame(rafId);
   }, [themeConfig]);
 
   // Derive current section for legacy navigation sync
@@ -189,11 +185,11 @@ const App: React.FC<AppProps> = ({ components }) => {
 
       {/* Main Content Transition Container */}
       <main id="main-content" className="relative z-10 max-w-7xl mx-auto px-6 py-12 min-h-[75dvh]">
-        <Suspense fallback={null}>
-          <AnimatePresence mode="wait">
+        <Suspense fallback={<SuspenseLoader />}>
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={location.pathname}
-              initial="initial"
+              initial={false}
               animate="in"
               exit="out"
               variants={pageVariants}
@@ -284,20 +280,6 @@ const App: React.FC<AppProps> = ({ components }) => {
       {/* Modular System Popup Notice */}
       <MaintenanceBanner alertConfig={alertConfig} />
 
-      {/* 2-second App Opening Intro Loader Overlay */}
-      <AnimatePresence>
-        {showAppLoader && (
-          <motion.div
-            key="app-intro-overlay"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-gray-950 pointer-events-auto"
-          >
-            <SuspenseLoader message="starting system..." />
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
