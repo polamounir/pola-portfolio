@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/generate-sitemap.mjs && node scripts/prerender.mjs",
-    "prerender": "node scripts/prerender.mjs",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist/server && node scripts/generate-sitemap.mjs && node scripts/prerender-ssg.mjs",
+    "prerender": "vite build --ssr src/entry-server.tsx --outDir dist/server && node scripts/prerender-ssg.mjs",
     "sitemap": "node scripts/generate-sitemap.mjs",
     "lhci": "lhci autorun",
     "verify": "node scripts/verify-seo.mjs",

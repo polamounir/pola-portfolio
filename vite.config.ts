@@ -4,19 +4,22 @@ import tailwindcss from '@tailwindcss/vite'
 
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   plugins: [react(), tailwindcss()],
   optimizeDeps: {
     include: ['lucide-react'],
   },
   build: {
     rollupOptions: {
-      output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom'],
-          'vendor-motion': ['framer-motion'],
-        },
-      },
+      output: isSsrBuild
+        ? {}
+        : {
+            manualChunks: {
+              'vendor-react': ['react', 'react-dom'],
+              'vendor-motion': ['framer-motion'],
+            },
+          },
     },
   },
-})
+}))
+
