@@ -79,4 +79,28 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
+}
+
+/* Cyber Skeleton Shimmer Animation */
+@keyframes cyber-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(31, 41, 55, 0.45) 0%,
+    rgba(55, 65, 81, 0.75) 25%,
+    rgba(74, 222, 128, 0.12) 50%,
+    rgba(55, 65, 81, 0.75) 75%,
+    rgba(31, 41, 55, 0.45) 100%
+  );
+  background-size: 250% 100%;
+  animation: cyber-shimmer 2.2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+

@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { HelpCircle, FileText } from "lucide-react";
 import type { PersonalInfo, Skill, ExperienceItem, Project, FaqItem, CertificationItem } from "../../types";
 import { SkillsSection, ExperienceSection } from "../sections";
+import { AboutSkeleton } from "../skeletons/AboutSkeleton";
 import defaultFaqData from "../../data/faq.json";
 
 interface AboutPageProps {
@@ -15,6 +16,7 @@ interface AboutPageProps {
   faqs?: FaqItem[];
   certifications?: CertificationItem[];
   tools?: string[];
+  isLoading?: boolean;
 }
 
 const AboutPage: React.FC<AboutPageProps> = ({
@@ -26,6 +28,7 @@ const AboutPage: React.FC<AboutPageProps> = ({
   faqs,
   certifications,
   tools,
+  isLoading = false,
 }) => {
   const location = useLocation();
 
@@ -37,6 +40,11 @@ const AboutPage: React.FC<AboutPageProps> = ({
       }
     }
   }, [location.hash]);
+
+  if (isLoading) {
+    return <AboutSkeleton />;
+  }
+
 
   const activeFaqs = faqs && faqs.length > 0 ? faqs : (defaultFaqData as FaqItem[]);
 

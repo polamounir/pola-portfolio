@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, type Transition } from "framer-motion";
 import { Folder, Code, Github, ExternalLink } from "lucide-react";
 import type { ProjectsSectionProps } from "../../utils/types";
+import { ProjectsSkeleton } from "../skeletons/ProjectsSkeleton";
 
 const pageTransition: Transition = {
   type: "spring",
@@ -18,11 +19,12 @@ const tileVariants = {
   visible: { opacity: 1, scale: 1 },
 };
 
-const ProjectsSection: React.FC<ProjectsSectionProps & { isStandalonePage?: boolean }> = ({
+const ProjectsSection: React.FC<ProjectsSectionProps & { isStandalonePage?: boolean; isLoading?: boolean }> = ({
   projects,
   setCurrentProject: _setCurrentProject,
   PERSONAL_INFO,
   isStandalonePage = true,
+  isLoading = false,
 }) => {
   // Emit ready signal for data-dependent prerendering
   useEffect(() => {
@@ -30,6 +32,10 @@ const ProjectsSection: React.FC<ProjectsSectionProps & { isStandalonePage?: bool
       document.body.setAttribute("data-prerender-ready", "true");
     }
   }, [projects]);
+
+  if (isLoading && (!projects || projects.length === 0)) {
+    return <ProjectsSkeleton count={4} />;
+  }
 
   return (
     <div className="space-y-8 font-mono">

@@ -18,7 +18,7 @@ import {
   DEFAULT_EXPERIENCE_DATA,
 } from "../constants";
 import defaultFaqs from "../data/faq.json";
-import { portfolioApi, type BackendAlert, type BackendTheme } from "../services/api";
+import { portfolioApi, type BackendAlert, type BackendTheme, type BackendInitData } from "../services/api";
 import type {
   PersonalInfo,
   Project,
@@ -111,24 +111,57 @@ const DEFAULT_TOOLS = ["VS Code", "Git", "Postman", "Figma", "Terminal"];
 // Module-level cache to prevent duplicate fetches (React StrictMode double-mount)
 let _cachedData: {
   timestamp: number;
-  data: Awaited<ReturnType<typeof _fetchAll>> | null;
+  data: BackendInitData | null;
 } = { timestamp: 0, data: null };
 
 const CACHE_TTL = 5000; // 5 seconds
 
-async function _fetchAll(signal?: AbortSignal) {
-  return Promise.all([
-    portfolioApi.getProfile(signal),
-    portfolioApi.getProjects(signal),
-    portfolioApi.getSkills(signal),
-    portfolioApi.getExperiences(signal),
-    portfolioApi.getNavigationLinks(signal),
-    portfolioApi.getAlert(signal),
-    portfolioApi.getTheme(signal),
-    portfolioApi.getFaqs(signal),
-    portfolioApi.getCertifications(signal),
-    portfolioApi.getTools(signal),
-  ]);
+async function _fetchInitData(signal?: AbortSignal): Promise<BackendInitData | null> {
+  // Primary attempt: Single unified /init endpoint (1 network request)
+  const init = await portfolioApi.getInit(signal);
+  if (init) return init;
+
+  // Fallback: Individual endpoints if /init is unreachable or legacy server
+  try {
+    const [
+      profile,
+      projects,
+      skills,
+      experiences,
+      navigationLinks,
+      alert,
+      theme,
+      faqs,
+      certifications,
+      tools,
+    ] = await Promise.all([
+      portfolioApi.getProfile(signal),
+      portfolioApi.getProjects(signal),
+      portfolioApi.getSkills(signal),
+      portfolioApi.getExperiences(signal),
+      portfolioApi.getNavigationLinks(signal),
+      portfolioApi.getAlert(signal),
+      portfolioApi.getTheme(signal),
+      portfolioApi.getFaqs(signal),
+      portfolioApi.getCertifications(signal),
+      portfolioApi.getTools(signal),
+    ]);
+
+    return {
+      profile: profile || {},
+      projects: projects || [],
+      skills: skills || [],
+      experiences: experiences || [],
+      navigationLinks: navigationLinks || [],
+      alert,
+      theme,
+      faqs: faqs || [],
+      certifications: certifications || [],
+      tools: tools || [],
+    };
+  } catch {
+    return null;
+  }
 }
 
 export const usePortfolioData = (): UsePortfolioDataReturn => {
@@ -161,30 +194,32 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
 
     const loadData = async () => {
       try {
-        let results: Awaited<ReturnType<typeof _fetchAll>>;
+        let payload: BackendInitData | null = null;
 
         // Return cached data if recent (prevents StrictMode double-fetch)
         if (_cachedData.data && Date.now() - _cachedData.timestamp < CACHE_TTL) {
-          results = _cachedData.data;
+          payload = _cachedData.data;
         } else {
-          results = await _fetchAll(controller.signal);
-          _cachedData = { timestamp: Date.now(), data: results };
+          payload = await _fetchInitData(controller.signal);
+          if (payload) {
+            _cachedData = { timestamp: Date.now(), data: payload };
+          }
         }
 
-        const [
-          profileRes,
-          projectsRes,
-          skillsRes,
-          expRes,
-          navRes,
-          alertRes,
-          themeRes,
-          faqsRes,
-          certsRes,
-          toolsRes,
-        ] = results;
+        if (!payload || !isMounted) return;
 
-        if (!isMounted) return;
+        const {
+          profile: profileRes,
+          projects: projectsRes,
+          skills: skillsRes,
+          experiences: expRes,
+          navigationLinks: navRes,
+          alert: alertRes,
+          theme: themeRes,
+          faqs: faqsRes,
+          certifications: certsRes,
+          tools: toolsRes,
+        } = payload;
 
         startTransition(() => {
           // Set theme settings

@@ -14,6 +14,15 @@ import AboutPage from "./components/pages/AboutPage";
 import ProjectPage from "./components/pages/ProjectPage";
 import NotFoundPage from "./components/pages/NotFoundPage";
 
+// --- Route Skeletons for Fluid UX Loading ---
+import {
+  HomeSkeleton,
+  ProjectsSkeleton,
+  AboutSkeleton,
+  ProjectDetailSkeleton,
+  ContactSkeleton,
+} from "./components/skeletons";
+
 // Framer Motion Page Transition Variants
 const pageVariants = {
   initial: { opacity: 0, y: 10, filter: "blur(5px)" },
@@ -50,6 +59,7 @@ const App: React.FC = () => {
     setFormData,
     submissionStatus,
     handleSubmit,
+    isLoading,
   } = usePortfolioData();
 
   // Dynamically apply custom theme colors and typography
@@ -164,9 +174,17 @@ const App: React.FC = () => {
           >
             <Suspense
               fallback={
-                <div className="text-center min-h-[85dvh] py-20 text-green-400/50 flex justify-center items-center font-mono">
-                  $ loading_module --route {location.pathname}...
-                </div>
+                location.pathname === "/about" || location.pathname === "/skills" || location.pathname === "/experience" ? (
+                  <AboutSkeleton />
+                ) : location.pathname === "/projects" ? (
+                  <ProjectsSkeleton />
+                ) : location.pathname.startsWith("/projects/") ? (
+                  <ProjectDetailSkeleton />
+                ) : location.pathname === "/contact" ? (
+                  <ContactSkeleton />
+                ) : (
+                  <HomeSkeleton />
+                )
               }
             >
               <Routes location={location}>
@@ -175,13 +193,17 @@ const App: React.FC = () => {
                   element={
                     <>
                       <SEO />
-                      <HomeSection
-                        terminalText={terminalText}
-                        fullText="Hello"
-                        PERSONAL_INFO={personalInfo}
-                        ABOUT_ME_SUMMARY={aboutMe}
-                        PROJECT_DATA={projects}
-                      />
+                      {isLoading ? (
+                        <HomeSkeleton />
+                      ) : (
+                        <HomeSection
+                          terminalText={terminalText}
+                          fullText="Hello"
+                          PERSONAL_INFO={personalInfo}
+                          ABOUT_ME_SUMMARY={aboutMe}
+                          PROJECT_DATA={projects}
+                        />
+                      )}
                     </>
                   }
                 />
@@ -197,6 +219,7 @@ const App: React.FC = () => {
                       faqs={faqs}
                       certifications={certifications}
                       tools={dailyTools}
+                      isLoading={isLoading}
                     />
                   }
                 />
@@ -210,6 +233,7 @@ const App: React.FC = () => {
                         setCurrentProject={() => {}}
                         PERSONAL_INFO={personalInfo}
                         isStandalonePage={true}
+                        isLoading={isLoading}
                       />
                     </>
                   }
@@ -220,6 +244,7 @@ const App: React.FC = () => {
                     <ProjectPage
                       projects={projects}
                       personalInfo={personalInfo}
+                      isLoading={isLoading}
                     />
                   }
                 />
@@ -228,13 +253,17 @@ const App: React.FC = () => {
                   element={
                     <>
                       <SEO />
-                      <ContactSection
-                        PERSONAL_INFO={personalInfo}
-                        formData={formData}
-                        setFormData={setFormData}
-                        handleSubmit={handleSubmit}
-                        submissionStatus={submissionStatus}
-                      />
+                      {isLoading ? (
+                        <ContactSkeleton />
+                      ) : (
+                        <ContactSection
+                          PERSONAL_INFO={personalInfo}
+                          formData={formData}
+                          setFormData={setFormData}
+                          handleSubmit={handleSubmit}
+                          submissionStatus={submissionStatus}
+                        />
+                      )}
                     </>
                   }
                 />

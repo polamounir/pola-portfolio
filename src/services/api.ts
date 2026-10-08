@@ -143,6 +143,19 @@ export interface BackendTool {
   order?: number;
 }
 
+export interface BackendInitData {
+  profile: BackendProfile;
+  projects: BackendProject[];
+  skills: BackendSkill[];
+  experiences: BackendExperience[];
+  navigationLinks: BackendNavLink[];
+  alert: BackendAlert | null;
+  theme: BackendTheme | null;
+  faqs: BackendFaq[];
+  certifications: BackendCertification[];
+  tools: BackendTool[];
+}
+
 // Shared fetch helper with AbortSignal support
 async function apiFetch<T>(url: string, signal?: AbortSignal): Promise<T | null> {
   try {
@@ -158,6 +171,7 @@ async function apiFetch<T>(url: string, signal?: AbortSignal): Promise<T | null>
 }
 
 export const portfolioApi = {
+  getInit: (signal?: AbortSignal) => apiFetch<BackendInitData>(`${API_BASE}/init`, signal),
   getTheme: (signal?: AbortSignal) => apiFetch<BackendTheme>(`${API_BASE}/theme`, signal),
   getAlert: (signal?: AbortSignal) => apiFetch<BackendAlert>(`${API_BASE}/alert`, signal),
   getProfile: (signal?: AbortSignal) => apiFetch<BackendProfile>(`${API_BASE}/profile`, signal),
