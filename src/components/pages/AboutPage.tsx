@@ -115,9 +115,9 @@ const AboutPage: React.FC<AboutPageProps> = ({
           >
             View Featured Projects &rarr;
           </Link>
-          {personalInfo.resumeUrl && (
+          {Boolean(personalInfo?.resumeUrl || "/Pola_Mounir_Resume.pdf") && (
             <a
-              href={personalInfo.resumeUrl}
+              href={personalInfo?.resumeUrl || "/Pola_Mounir_Resume.pdf"}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-500/15 text-green-400 border border-green-400/40 hover:bg-green-500/25 hover:border-green-400 transition-all font-semibold shadow-md shadow-green-400/10 text-sm"

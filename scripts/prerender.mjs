@@ -51,7 +51,7 @@ async function prerender() {
   } catch (err) {
     console.warn(`Prerender notice: Puppeteer could not launch in this environment (${err.message}).`);
     await server.close();
-    if (process.env.CI || process.env.VERCEL) {
+    if (process.env.CI || process.env.VERCEL || process.env.NETLIFY) {
       console.log('Skipping Puppeteer prerender in CI environment. Static build and public assets remain intact.');
       return;
     }

@@ -81,21 +81,18 @@ const Header: React.FC<HeaderProps> = ({
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
-            {PERSONAL_INFO.resumeUrl && (
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            {Boolean(PERSONAL_INFO?.resumeUrl || "/Pola_Mounir_Resume.pdf") && (
               <a
-                href={PERSONAL_INFO.resumeUrl}
+                href={PERSONAL_INFO?.resumeUrl || "/Pola_Mounir_Resume.pdf"}
                 target="_blank"
                 rel="noopener noreferrer"
                 title="View Resume / CV"
                 aria-label="View Resume / CV"
-                className="text-gray-400 hover:text-green-400 transition-colors"
+                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-semibold bg-green-500/15 text-green-400 border border-green-400/40 hover:bg-green-500/25 hover:border-green-400 hover:text-green-300 transition-all shadow-[0_0_10px_rgba(34,197,94,0.2)] group"
               >
-                <FileText className="w-5 h-5 sm:hidden" />
-                <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-green-500/15 text-green-400 border border-green-400/40 hover:bg-green-500/25 hover:border-green-400 transition-all shadow-[0_0_10px_rgba(34,197,94,0.2)]">
-                  <FileText className="w-3.5 h-3.5" />
-                  <span>Resume</span>
-                </span>
+                <FileText className="w-3.5 h-3.5 group-hover:scale-110 transition-transform shrink-0" />
+                <span>Resume</span>
               </a>
             )}
             <a

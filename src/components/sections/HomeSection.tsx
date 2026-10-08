@@ -83,9 +83,9 @@ const HomeSection: React.FC<HomeSectionProps> = ({
               >
                 Explore Projects <ArrowRight className="w-4 h-4" />
               </Link>
-              {PERSONAL_INFO.resumeUrl && (
+              {Boolean(PERSONAL_INFO?.resumeUrl || "/Pola_Mounir_Resume.pdf") && (
                 <a
-                  href={PERSONAL_INFO.resumeUrl}
+                  href={PERSONAL_INFO?.resumeUrl || "/Pola_Mounir_Resume.pdf"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-green-500/15 text-green-400 border border-green-400/40 hover:bg-green-500/25 hover:border-green-400 transition-all font-semibold text-sm shadow-md shadow-green-400/10"
