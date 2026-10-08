@@ -54,8 +54,16 @@ const App: React.FC<AppProps> = ({ components }) => {
   const location = useLocation();
   const isFirstMountRef = React.useRef(true);
 
+  // 2-second App Opening Intro Loader
+  const isServer = typeof window === "undefined";
+  const [showAppLoader, setShowAppLoader] = React.useState(!isServer);
+
   React.useEffect(() => {
     isFirstMountRef.current = false;
+    const timer = setTimeout(() => {
+      setShowAppLoader(false);
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   // Custom interaction hooks
@@ -181,7 +189,7 @@ const App: React.FC<AppProps> = ({ components }) => {
 
       {/* Main Content Transition Container */}
       <main id="main-content" className="relative z-10 max-w-7xl mx-auto px-6 py-12 min-h-[75dvh]">
-        <Suspense fallback={<SuspenseLoader />}>
+        <Suspense fallback={null}>
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
@@ -275,6 +283,21 @@ const App: React.FC<AppProps> = ({ components }) => {
 
       {/* Modular System Popup Notice */}
       <MaintenanceBanner alertConfig={alertConfig} />
+
+      {/* 2-second App Opening Intro Loader Overlay */}
+      <AnimatePresence>
+        {showAppLoader && (
+          <motion.div
+            key="app-intro-overlay"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-gray-950 pointer-events-auto"
+          >
+            <SuspenseLoader message="starting system..." />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
