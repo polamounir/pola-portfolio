@@ -118,11 +118,23 @@ const ContactSection: React.FC<ContactSectionProps> = ({
       >
         <h3 className="text-xl font-bold text-green-400 mb-6">Send Message</h3>
 
-        <div className="space-y-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(e as unknown as React.MouseEvent<HTMLButtonElement>);
+          }}
+          className="space-y-4"
+        >
           <div>
-            <label className="text-gray-400 text-sm mb-2 block">Name</label>
+            <label htmlFor="contact-name" className="text-gray-400 text-sm mb-2 block font-medium">
+              Name
+            </label>
             <input
+              id="contact-name"
+              name="name"
               type="text"
+              autoComplete="name"
+              required
               value={formData.name}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
@@ -133,9 +145,15 @@ const ContactSection: React.FC<ContactSectionProps> = ({
           </div>
 
           <div>
-            <label className="text-gray-400 text-sm mb-2 block">Email</label>
+            <label htmlFor="contact-email" className="text-gray-400 text-sm mb-2 block font-medium">
+              Email
+            </label>
             <input
+              id="contact-email"
+              name="email"
               type="email"
+              autoComplete="email"
+              required
               value={formData.email}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, email: e.target.value }))
@@ -146,9 +164,14 @@ const ContactSection: React.FC<ContactSectionProps> = ({
           </div>
 
           <div>
-            <label className="text-gray-400 text-sm mb-2 block">Message</label>
+            <label htmlFor="contact-message" className="text-gray-400 text-sm mb-2 block font-medium">
+              Message
+            </label>
             <textarea
+              id="contact-message"
+              name="message"
               rows={4}
+              required
               value={formData.message}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, message: e.target.value }))
@@ -159,16 +182,15 @@ const ContactSection: React.FC<ContactSectionProps> = ({
           </div>
 
           <motion.button
-            onClick={handleSubmit}
+            type="submit"
             whileHover={{
               scale: 1.01,
             }}
             whileTap={{ scale: 0.98 }}
-            className="w-full bg-green-500 hover:bg-green-600 text-gray-900 font-bold py-3 rounded transition-all shadow-lg shadow-green-400/30 hover:shadow-[0_0_15px_rgba(34,197,94,0.5)]"
+            className="w-full bg-green-500 hover:bg-green-600 text-gray-900 font-bold py-3 rounded transition-all shadow-lg shadow-green-400/30 hover:shadow-[0_0_15px_rgba(34,197,94,0.5)] cursor-pointer"
           >
             Send Message →
           </motion.button>
-
 
           <AnimatePresence>
             {submissionStatus === "success" && (
@@ -196,7 +218,8 @@ const ContactSection: React.FC<ContactSectionProps> = ({
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </form>
+
       </motion.div>
     </div>
   </div>
