@@ -6,8 +6,10 @@ import { BackgroundGrid, CursorGlow, SuspenseLoader } from "./components/ui";
 import { MaintenanceBanner } from "./components/popups";
 import { useTypewriter, usePortfolioData } from "./hooks";
 
-// --- Route-Driven Feature Modules (Lazy Loaded on App Open & Navigation) ---
-const LazyHomeSection = React.lazy(() => import("./components/sections/HomeSection"));
+// --- Core Landing Module (Eagerly Loaded for Instant Initial Paint) ---
+import HomeSection from "./components/sections/HomeSection";
+
+// --- Route-Driven Feature Modules (Lazy Loaded on Navigation) ---
 const LazyProjectsSection = React.lazy(() => import("./components/sections/ProjectsSection"));
 const LazyContactSection = React.lazy(() => import("./components/sections/ContactSection"));
 const LazyAboutPage = React.lazy(() => import("./components/pages/AboutPage"));
@@ -42,7 +44,7 @@ const pageTransition: Transition = {
 };
 
 const App: React.FC<AppProps> = ({ components }) => {
-  const Home = components?.HomeSection || LazyHomeSection;
+  const Home = components?.HomeSection || HomeSection;
   const Projects = components?.ProjectsSection || LazyProjectsSection;
   const Contact = components?.ContactSection || LazyContactSection;
   const About = components?.AboutPage || LazyAboutPage;
