@@ -27,11 +27,6 @@ export interface AppProps {
   components?: AppRouteComponents;
 }
 
-// --- Route Skeletons for Fluid UX Loading ---
-import {
-  HomeSkeleton,
-  ContactSkeleton,
-} from "./components/skeletons";
 
 // Framer Motion Page Transition Variants (Lightweight, hardware-accelerated transforms)
 const pageVariants = {
@@ -81,7 +76,6 @@ const App: React.FC<AppProps> = ({ components }) => {
     setFormData,
     submissionStatus,
     handleSubmit,
-    isLoading,
   } = usePortfolioData();
 
   // Dynamically apply custom theme colors and typography
@@ -201,17 +195,13 @@ const App: React.FC<AppProps> = ({ components }) => {
                   element={
                     <>
                       <SEO />
-                      {isLoading ? (
-                        <HomeSkeleton />
-                      ) : (
-                        <Home
-                          terminalText={terminalText}
-                          fullText="Hello"
-                          PERSONAL_INFO={personalInfo}
-                          ABOUT_ME_SUMMARY={aboutMe}
-                          PROJECT_DATA={projects}
-                        />
-                      )}
+                      <Home
+                        terminalText={terminalText}
+                        fullText="Hello"
+                        PERSONAL_INFO={personalInfo}
+                        ABOUT_ME_SUMMARY={aboutMe}
+                        PROJECT_DATA={projects}
+                      />
                     </>
                   }
                 />
@@ -227,7 +217,6 @@ const App: React.FC<AppProps> = ({ components }) => {
                       faqs={faqs}
                       certifications={certifications}
                       tools={dailyTools}
-                      isLoading={isLoading}
                     />
                   }
                 />
@@ -241,7 +230,6 @@ const App: React.FC<AppProps> = ({ components }) => {
                         setCurrentProject={() => {}}
                         PERSONAL_INFO={personalInfo}
                         isStandalonePage={true}
-                        isLoading={isLoading}
                       />
                     </>
                   }
@@ -252,7 +240,6 @@ const App: React.FC<AppProps> = ({ components }) => {
                     <ProjectDetail
                       projects={projects}
                       personalInfo={personalInfo}
-                      isLoading={isLoading}
                     />
                   }
                 />
@@ -261,17 +248,13 @@ const App: React.FC<AppProps> = ({ components }) => {
                   element={
                     <>
                       <SEO />
-                      {isLoading ? (
-                        <ContactSkeleton />
-                      ) : (
-                        <Contact
-                          PERSONAL_INFO={personalInfo}
-                          formData={formData}
-                          setFormData={setFormData}
-                          handleSubmit={handleSubmit}
-                          submissionStatus={submissionStatus}
-                        />
-                      )}
+                      <Contact
+                        PERSONAL_INFO={personalInfo}
+                        formData={formData}
+                        setFormData={setFormData}
+                        handleSubmit={handleSubmit}
+                        submissionStatus={submissionStatus}
+                      />
                     </>
                   }
                 />

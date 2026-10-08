@@ -41,9 +41,9 @@ export const SuspenseLoader: React.FC<SuspenseLoaderProps> = ({
         <span className="text-green-400 font-semibold">{message}</span>
       </div>
 
-      {/* High-tech pulsing progress track */}
+      {/* High-tech hardware-accelerated progress track */}
       <div className="w-40 h-1.5 bg-gray-900 rounded-full overflow-hidden relative border border-green-500/30 shadow-inner">
-        <div className="absolute inset-y-0 bg-gradient-to-r from-green-500 via-emerald-400 to-cyan-400 rounded-full animate-shimmer w-full" />
+        <div className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-green-500 via-emerald-400 to-cyan-400 rounded-full animate-cyber-progress" />
       </div>
     </div>
   );

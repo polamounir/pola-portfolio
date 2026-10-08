@@ -3,7 +3,6 @@ import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Cpu, Code, Github, ExternalLink, ArrowLeft } from "lucide-react";
 import type { Project, PersonalInfo } from "../../types";
-import { ProjectDetailSkeleton } from "../skeletons/ProjectDetailSkeleton";
 
 interface ProjectPageProps {
   projects: Project[];
@@ -11,7 +10,7 @@ interface ProjectPageProps {
   isLoading?: boolean;
 }
 
-const ProjectPage: React.FC<ProjectPageProps> = ({ projects, personalInfo, isLoading = false }) => {
+const ProjectPage: React.FC<ProjectPageProps> = ({ projects, personalInfo }) => {
   const { slug } = useParams<{ slug: string }>();
 
   const project = projects.find(
@@ -28,9 +27,6 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ projects, personalInfo, isLoa
   }, [project]);
 
   if (!project) {
-    if (isLoading) {
-      return <ProjectDetailSkeleton />;
-    }
     return (
       <div className="max-w-4xl mx-auto py-20 text-center">
         <h1 className="text-3xl font-bold text-red-400 mb-4">Project Not Found</h1>
