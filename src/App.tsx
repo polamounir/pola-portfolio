@@ -4,7 +4,7 @@ import { AnimatePresence, motion, type Transition } from "framer-motion";
 import { Header, Footer, SEO } from "./components/common";
 import { BackgroundGrid, CursorGlow, SuspenseLoader } from "./components/ui";
 import { MaintenanceBanner } from "./components/popups";
-import { useTypewriter, usePortfolioData } from "./hooks";
+import { usePortfolioData } from "./hooks";
 
 // --- Core Landing Module (Eagerly Loaded for Instant Initial Paint) ---
 import HomeSection from "./components/sections/HomeSection";
@@ -58,8 +58,8 @@ const App: React.FC<AppProps> = ({ components }) => {
     isFirstMountRef.current = false;
   }, []);
 
-  // Custom interaction hooks
-  const terminalText = useTypewriter("Hello", 150);
+  // Terminal command text
+  const terminalText = "Hello";
 
   // Centralized live data & contact submission hook
   const {

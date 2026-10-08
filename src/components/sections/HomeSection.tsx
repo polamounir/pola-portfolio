@@ -10,8 +10,8 @@ const listVariants = {
   hidden: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
 };
 const listItemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
 };
 
 const HomeSection: React.FC<HomeSectionProps> = ({
@@ -42,7 +42,6 @@ const HomeSection: React.FC<HomeSectionProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={pageTransition}
         className="bg-gray-900 rounded-lg border border-green-400/30 shadow-2xl shadow-green-400/10 overflow-hidden"
-        style={{ minHeight: "220px" }}
       >
         <div className="flex items-center gap-2 px-4 py-2 bg-gray-800 border-b border-green-400/30">
           <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -112,7 +111,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({
       </motion.div>
 
       <motion.div
-        initial="hidden"
+        initial={false}
         animate="visible"
         variants={listVariants}
         className="grid grid-cols-2 md:grid-cols-4 gap-4"
@@ -137,11 +136,10 @@ const HomeSection: React.FC<HomeSectionProps> = ({
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
+        initial={false}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ ...pageTransition, delay: 0.4 }}
+        transition={pageTransition}
         className="bg-gray-900 rounded-lg border border-green-400/30 p-8 shadow-xl shadow-green-400/5"
-        style={{ minHeight: "120px" }}
       >
         <h2 className="text-2xl font-bold text-green-400 mb-4 flex items-center gap-2">
           <Code className="w-6 h-6" />$ cat about.txt
