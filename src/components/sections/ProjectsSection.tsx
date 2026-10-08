@@ -66,14 +66,13 @@ const ProjectsSection: React.FC<ProjectsSectionProps & { isStandalonePage?: bool
           <motion.div
             key={project.id}
             variants={tileVariants}
-            className="bg-gray-900 rounded-lg border border-green-400/20 p-6 transition-all group text-left w-full hover:border-green-400/50 flex flex-col justify-between shadow-lg shadow-green-400/5"
+            className="bg-gray-900 rounded-lg border border-green-400/20 p-6 transition-all group text-left w-full hover:border-green-400/80 hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] flex flex-col justify-between shadow-lg shadow-green-400/5"
             whileHover={{
               scale: 1.02,
-              boxShadow: "0 0 20px rgba(34, 197, 94, 0.4)",
-              borderColor: "rgba(34, 197, 94, 0.8)",
             }}
             transition={{ duration: 0.15 }}
           >
+
             <div>
               {project.imgSrc && (
                 <Link

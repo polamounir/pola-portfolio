@@ -30,9 +30,11 @@ const NavItem: React.FC<NavItemProps> = ({
 
   return (
     <motion.div
-      whileHover={{ scale: 1.05, boxShadow: "0 0 10px rgba(34, 197, 94, 0.4)" }}
+      whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
+      className="rounded-lg transition-shadow hover:shadow-[0_0_10px_rgba(34,197,94,0.4)]"
     >
+
       <Link
         to={targetPath}
         aria-current={isActive ? "page" : undefined}

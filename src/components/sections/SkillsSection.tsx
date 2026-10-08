@@ -175,14 +175,14 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
                 key={idx}
                 whileHover={{
                   scale: 1.05,
-                  backgroundColor: "rgba(34, 197, 94, 0.1)",
                 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-3 bg-gray-800 rounded border border-green-400/20 hover:border-green-400/40 transition-colors text-center text-gray-300 hover:text-green-400"
+                className="p-3 bg-gray-800 rounded border border-green-400/20 hover:border-green-400/40 hover:bg-green-500/10 transition-colors text-center text-gray-300 hover:text-green-400"
               >
                 {tool}
               </motion.div>
             ))}
+
           </div>
         </motion.div>
       </div>

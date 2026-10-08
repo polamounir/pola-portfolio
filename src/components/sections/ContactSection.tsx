@@ -162,13 +162,13 @@ const ContactSection: React.FC<ContactSectionProps> = ({
             onClick={handleSubmit}
             whileHover={{
               scale: 1.01,
-              boxShadow: "0 0 15px rgba(34, 197, 94, 0.5)",
             }}
             whileTap={{ scale: 0.98 }}
-            className="w-full bg-green-500 hover:bg-green-600 text-gray-900 font-bold py-3 rounded transition-colors shadow-lg shadow-green-400/30 hover:shadow-green-400/50"
+            className="w-full bg-green-500 hover:bg-green-600 text-gray-900 font-bold py-3 rounded transition-all shadow-lg shadow-green-400/30 hover:shadow-[0_0_15px_rgba(34,197,94,0.5)]"
           >
             Send Message →
           </motion.button>
+
 
           <AnimatePresence>
             {submissionStatus === "success" && (
