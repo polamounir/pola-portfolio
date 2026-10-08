@@ -108,21 +108,61 @@ const DEFAULT_CERTS: CertificationItem[] = [
 
 const DEFAULT_TOOLS = ["VS Code", "Git", "Postman", "Figma", "Terminal"];
 
-// Module-level cache to prevent duplicate fetches (React StrictMode double-mount)
+// Client Caching Configuration
+const LOCAL_STORAGE_KEY = "pola_portfolio_cache_v2";
+const CLIENT_CACHE_TTL = 10 * 60 * 1000; // 10 minutes cache validity
+
+// Module-level RAM cache
 let _cachedData: {
   timestamp: number;
   data: BackendInitData | null;
 } = { timestamp: 0, data: null };
 
-const CACHE_TTL = 5000; // 5 seconds
+// Active in-flight request deduplication
+let _inFlightPromise: Promise<BackendInitData | null> | null = null;
+
+function _getPersistedCache(): { timestamp: number; data: BackendInitData } | null {
+  if (typeof window === "undefined" || !window.localStorage) return null;
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed.timestamp === "number" && parsed.data) {
+      return parsed;
+    }
+  } catch {
+    // Ignore storage parse or access errors
+  }
+  return null;
+}
+
+function _setPersistedCache(data: BackendInitData) {
+  if (typeof window === "undefined" || !window.localStorage) return;
+  try {
+    const payload = { timestamp: Date.now(), data };
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+  } catch {
+    // Ignore storage quota exceeded or disabled errors
+  }
+}
 
 async function _fetchInitData(signal?: AbortSignal): Promise<BackendInitData | null> {
-  // Single unified /init endpoint (1 network request, zero waterfalls)
-  try {
-    return await portfolioApi.getInit(signal);
-  } catch {
-    return null;
+  // If a request is already in-flight, reuse it (prevents duplicate network calls)
+  if (_inFlightPromise) {
+    return _inFlightPromise;
   }
+
+  _inFlightPromise = (async () => {
+    try {
+      return await portfolioApi.getInit(signal);
+    } catch {
+      return null;
+    } finally {
+      _inFlightPromise = null;
+    }
+  })();
+
+  return _inFlightPromise;
 }
 
 export const usePortfolioData = (): UsePortfolioDataReturn => {
@@ -149,29 +189,12 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
     "success" | "error" | null
   >(null);
 
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const loadData = async () => {
-      try {
-        let payload: BackendInitData | null = null;
-
-        // Return cached data if recent (prevents StrictMode double-fetch)
-        if (_cachedData.data && Date.now() - _cachedData.timestamp < CACHE_TTL) {
-          payload = _cachedData.data;
-        } else {
-          payload = await _fetchInitData(controller.signal);
-          if (payload) {
-            _cachedData = { timestamp: Date.now(), data: payload };
-          }
-        }
-
-        if (!payload || !isMounted) return;
-
-        const {
-          profile: profileRes,
-          projects: projectsRes,
+  // Sync state from fetched or cached payload
+  const applyPayload = useCallback((payload: BackendInitData) => {
+    try {
+      const {
+        profile: profileRes,
+        projects: projectsRes,
           skills: skillsRes,
           experiences: expRes,
           navigationLinks: navRes,
@@ -381,23 +404,66 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
           }
         });
       } catch (err) {
-        console.warn("Error fetching portfolio live data, using fallbacks:", err);
+        console.warn("Error applying portfolio payload:", err);
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    // 1. Instant hydration from RAM or localStorage Cache (0ms latency)
+    let hasLoadedFromCache = false;
+    let isCacheFresh = false;
+
+    if (_cachedData.data) {
+      applyPayload(_cachedData.data);
+      hasLoadedFromCache = true;
+      isCacheFresh = Date.now() - _cachedData.timestamp < CLIENT_CACHE_TTL;
+    } else {
+      const persisted = _getPersistedCache();
+      if (persisted) {
+        _cachedData = persisted;
+        applyPayload(persisted.data);
+        hasLoadedFromCache = true;
+        isCacheFresh = Date.now() - persisted.timestamp < CLIENT_CACHE_TTL;
+      }
+    }
+
+    // 2. Fresh cache hit: completely bypass server request (0 requests to server!)
+    if (hasLoadedFromCache && isCacheFresh) {
+      return;
+    }
+
+    // 3. Stale-While-Revalidate: fetch in background during idle time
+    const fetchFreshData = async () => {
+      try {
+        const payload = await _fetchInitData(controller.signal);
+        if (payload && isMounted) {
+          _cachedData = { timestamp: Date.now(), data: payload };
+          _setPersistedCache(payload);
+          applyPayload(payload);
+        }
+      } catch (err) {
+        console.warn("Background revalidation non-fatal error:", err);
       } finally {
         if (isMounted) setIsLoading(false);
       }
     };
 
-    // Defer network sync to idle time so it NEVER blocks initial paint or critical path
+    // Defer network sync to idle time so it NEVER blocks initial paint or user interaction
     const idleId =
       typeof window !== "undefined" && "requestIdleCallback" in window
         ? (window as unknown as { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(
             () => {
-              if (isMounted) loadData();
+              if (isMounted) fetchFreshData();
             },
-            { timeout: 1500 }
+            { timeout: 2000 }
           )
         : setTimeout(() => {
-            if (isMounted) loadData();
+            if (isMounted) fetchFreshData();
           }, 300);
 
     return () => {
@@ -409,7 +475,7 @@ export const usePortfolioData = (): UsePortfolioDataReturn => {
         clearTimeout(idleId as unknown as number);
       }
     };
-  }, []);
+  }, [applyPayload]);
 
   const handleSubmit = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
