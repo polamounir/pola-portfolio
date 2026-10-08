@@ -6,13 +6,26 @@ import { BackgroundGrid, CursorGlow } from "./components/ui";
 import { MaintenanceBanner } from "./components/popups";
 import { useTypewriter, usePortfolioData } from "./hooks";
 
-// --- Route-Driven Feature Modules ---
-import HomeSection from "./components/sections/HomeSection";
-import ProjectsSection from "./components/sections/ProjectsSection";
-import ContactSection from "./components/sections/ContactSection";
-import AboutPage from "./components/pages/AboutPage";
-import ProjectPage from "./components/pages/ProjectPage";
-import NotFoundPage from "./components/pages/NotFoundPage";
+// --- Route-Driven Feature Modules (Client-side Lazy Loaded) ---
+const LazyHomeSection = React.lazy(() => import("./components/sections/HomeSection"));
+const LazyProjectsSection = React.lazy(() => import("./components/sections/ProjectsSection"));
+const LazyContactSection = React.lazy(() => import("./components/sections/ContactSection"));
+const LazyAboutPage = React.lazy(() => import("./components/pages/AboutPage"));
+const LazyProjectPage = React.lazy(() => import("./components/pages/ProjectPage"));
+const LazyNotFoundPage = React.lazy(() => import("./components/pages/NotFoundPage"));
+
+export interface AppRouteComponents {
+  HomeSection?: React.ComponentType<any>;
+  ProjectsSection?: React.ComponentType<any>;
+  ContactSection?: React.ComponentType<any>;
+  AboutPage?: React.ComponentType<any>;
+  ProjectPage?: React.ComponentType<any>;
+  NotFoundPage?: React.ComponentType<any>;
+}
+
+export interface AppProps {
+  components?: AppRouteComponents;
+}
 
 // --- Route Skeletons for Fluid UX Loading ---
 import {
@@ -36,7 +49,14 @@ const pageTransition: Transition = {
   damping: 30,
 };
 
-const App: React.FC = () => {
+const App: React.FC<AppProps> = ({ components }) => {
+  const Home = components?.HomeSection || LazyHomeSection;
+  const Projects = components?.ProjectsSection || LazyProjectsSection;
+  const Contact = components?.ContactSection || LazyContactSection;
+  const About = components?.AboutPage || LazyAboutPage;
+  const ProjectDetail = components?.ProjectPage || LazyProjectPage;
+  const NotFound = components?.NotFoundPage || LazyNotFoundPage;
+
   const location = useLocation();
   const isFirstMountRef = React.useRef(true);
 
@@ -201,7 +221,7 @@ const App: React.FC = () => {
                       {isLoading ? (
                         <HomeSkeleton />
                       ) : (
-                        <HomeSection
+                        <Home
                           terminalText={terminalText}
                           fullText="Hello"
                           PERSONAL_INFO={personalInfo}
@@ -215,7 +235,7 @@ const App: React.FC = () => {
                 <Route
                   path="/about"
                   element={
-                    <AboutPage
+                    <About
                       personalInfo={personalInfo}
                       aboutMe={aboutMe}
                       skills={skills}
@@ -233,7 +253,7 @@ const App: React.FC = () => {
                   element={
                     <>
                       <SEO />
-                      <ProjectsSection
+                      <Projects
                         projects={projects}
                         setCurrentProject={() => {}}
                         PERSONAL_INFO={personalInfo}
@@ -246,7 +266,7 @@ const App: React.FC = () => {
                 <Route
                   path="/projects/:slug"
                   element={
-                    <ProjectPage
+                    <ProjectDetail
                       projects={projects}
                       personalInfo={personalInfo}
                       isLoading={isLoading}
@@ -261,7 +281,7 @@ const App: React.FC = () => {
                       {isLoading ? (
                         <ContactSkeleton />
                       ) : (
-                        <ContactSection
+                        <Contact
                           PERSONAL_INFO={personalInfo}
                           formData={formData}
                           setFormData={setFormData}
@@ -274,8 +294,8 @@ const App: React.FC = () => {
                 />
                 <Route path="/skills" element={<Navigate to="/about" replace />} />
                 <Route path="/experience" element={<Navigate to="/about" replace />} />
-                <Route path="/404" element={<NotFoundPage />} />
-                <Route path="*" element={<NotFoundPage />} />
+                <Route path="/404" element={<NotFound />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
           </motion.div>
